@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+actor User
+actor Admin
+rectangle Login { 
+    User-->(Login)
+    User-->(Register)
+    User-->(Change Password)
+
+
+    Admin-up->(Login)
+    Admin-up->(Register)
+    Admin-up->(Change Password)
+
+}
+@enduml

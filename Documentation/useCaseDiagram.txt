@@ -1,0 +1,66 @@
+@startuml
+left to right direction
+
+'Login diagram
+
+actor User
+actor Admin
+rectangle Login { 
+    User-->(Login)
+    User-->(Register)
+    User-->(Change Password)
+
+
+    Admin-up->(Login)
+    Admin-up->(Register)
+    Admin-up->(Change Password)
+
+}
+newpage
+'Routine Editor Diagram
+left to right direction
+actor User
+rectangle RoutineEditor {
+    User--->(Add Routine)
+    User--->(Delete Routine)
+    User--->(Edit Routine)
+    User--->(Add Routine Tags)
+    User--->(Add Workout to Routine)
+    User--->(Add Sets x Reps)
+    User--->(Add Routine Day)
+    User--->(Add Routien Week)
+    User--->(Duplicate Routine Week)
+}
+
+newpage
+'Workout Logger and Search Diagram
+left to right direction
+
+actor User
+actor Admin
+
+rectangle LogWorkouts {
+    User--->(Track Workout)
+    User--->(View Workout Log)
+
+}
+rectangle RoutineBrowser {
+    User--->(Add Review)
+    User--->(Remove Own Review)
+    User--->(Search Routines)
+    User--->(Filter Routines)
+    User--->(Add Routine To Account)
+    Admin--->(Search Routines)
+    Admin--->(Filter Routines)
+}
+newpage
+'Admin tasks diagram
+left to right direction
+actor Admin
+rectangle AdminTasks {
+    Admin--->(Add Workout)
+    Admin--->(Remove User)
+    Admin--->(Delete Any Review)
+    Admin--->(Delete Any Routine)
+}
+@enduml
