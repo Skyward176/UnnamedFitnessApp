@@ -15,6 +15,7 @@
 
 # Development
 
+**Test cases should be created before starting on each component.**
 1. Fit Test: Create ultra-barebones API, frontend, and database to test integration of technologies. (1 day)
 2. User table: Create the Database tables for user accounts.( 1 day)
 3. User Serializers: Create API views to allow CRUD of Users.(2 days)
