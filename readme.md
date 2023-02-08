@@ -28,13 +28,10 @@ Objectives that could be cut in the case of time constraints
 - Integration with other fitness solutions(Fitbit, WearOS, etc.)
 
 ### The Tech Stack
-- API – Rocket.rs
 - Auth- Firebase Auth
 - Database – Firestore
-- Algolia – Full Text Search (Tentative)
+- Algolia – Full Text Search
 - Frontend – nuxt.js (Vue.js)
 - CSS Classes – Tailwind CSS
-- API tester – Postman
-- Environment Variables – rust std::env and javascript dotenv
 - *Possible* Containerization – Docker 
 - Development Environment: neovim, you nerds!
