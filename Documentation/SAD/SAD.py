@@ -14,6 +14,8 @@ graph_attr = {
 with Diagram("upLift", direction="LR", filename="systemArchitectureDiagram", graph_attr=graph_attr):
     database = Firestore("Database")
     frontend = Vue("Frontend")
-    database>>Rust("API")>>[frontend, Authentication("Firebase Auth")]
-    database >> Extensions("Algolia Text Search")
-    frontend>> Users("Users")
+    search = Extensions("Algolia Text Search")
+    database - Rust("API")-[frontend, Authentication("Firebase Auth")]
+    database >> search
+    search >> frontend
+    frontend - Users("Users")
