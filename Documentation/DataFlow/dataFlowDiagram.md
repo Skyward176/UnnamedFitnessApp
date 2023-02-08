@@ -1,2 +1,2 @@
 # Data Flow Diagram
-<img src='./dataFlowDiagram.drawio.svg'></img>
+<img style='background-color:white' src='./dataFlowDiagram.drawio.svg'></img>
