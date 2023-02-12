@@ -1,2 +1,2 @@
 # User Flow Diagram 
-<img href ='./userFlow.drawio.svg'></img>
+<img style="background-color:white" src ='./userFlow.drawio.svg'></img>
