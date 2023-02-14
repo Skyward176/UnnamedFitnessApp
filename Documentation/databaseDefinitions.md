@@ -18,7 +18,7 @@ Bullets are data items
 - weeks[days[exercises[]]]
 - posted_by
 - **tags**
-- tag_name
+    - tag_name
 ### Reviews
 - routine_id
 - posted_by
