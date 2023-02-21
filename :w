@@ -1,0 +1,7 @@
+<template>
+    <nav className='bg-black'>
+        <h1 className='text-2xl text-red-50'>Hi, navbar!</h1>
+    </nav>
+</template>
+<script>
+</script>
