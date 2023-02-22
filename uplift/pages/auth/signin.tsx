@@ -4,6 +4,7 @@ import {auth} from '../../firebase/clientApp';
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
 import Link from 'next/link'
+import Navbar from '../../components/Navbar';
 
 async function signInHandler(email, password) {
     let result = null;
@@ -35,6 +36,7 @@ export default function Signin() {
     }
     return(
         <>
+            <Navbar />
             <form onSubmit={handleSignInForm}>
                 <label htmlFor="email">
                     <p>Email</p>
@@ -44,9 +46,9 @@ export default function Signin() {
                     <p>Password</p>
                     <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" placeholder="password" />
                 </label>
-                <button type="submit">Sign In</button>
+                <button className = 'text-white' type="submit">Sign In</button>
             </form>
-            <Link href='auth/signup'> Don't have an account? </Link>
+            <Link href='auth/signup'> <p className='text-white'>Don't have an account? </p></Link>
         </>
     );
 }

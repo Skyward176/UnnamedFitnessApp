@@ -1,11 +1,11 @@
 import Link from 'next/link'
 export default function Navbar () {
     return (
-        <div className='w-full h-16 bg-black shadow-lg absolute divide-y divide-gray-50'>
-            <div className='inline-flex my-3 w-full justify-center'>
+        <div className='w-full h-16 bg-black border-b-white border-b'>
+            <div className='inline-flex my-3 w-full mx-4'>
                 <Link href='/'>
-                    <p className='font-light font-sans text-4xl text-gray-50'>
-                        dialed<span className='text-mint-green'>In</span>
+                    <p className='font-light font-sans text-4xl text-white'>
+                        <span className='text-accent-100'>up</span>Lift
                     </p>
                 </Link>
             </div>

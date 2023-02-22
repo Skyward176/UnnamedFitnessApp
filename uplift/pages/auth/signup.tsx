@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {auth} from '../../firebase/clientApp';
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
+import Navbar from '../../components/Navbar';
 
 async function signInHandler(email, password) {
     let result = null;
@@ -34,6 +35,7 @@ export default function SignUp() {
     }
     return(
         <>
+            <Navbar />
             <form onSubmit={handleSignInForm}>
                 <label htmlFor="email">
                     <p>Email</p>
