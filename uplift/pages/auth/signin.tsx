@@ -1,12 +1,12 @@
 import React from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import {auth} from '../../firebase/clientApp';
+import {auth} from '../../firebase/firebaseInit';
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
 import Link from 'next/link'
 import Navbar from '../../components/Navbar';
 
-async function signInHandler(email, password) {
+async function signInHandler(email:string, password:string) {
     let result = null;
     let error = null;
 
@@ -24,7 +24,7 @@ export default function Signin() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter();
-    const handleSignInForm = async(event) => {
+    const handleSignInForm = async(event:any) => {
         event.preventDefault();
         const {result, error } = await signInHandler(email, password);
         if(error) {
