@@ -1,9 +1,10 @@
+'use client'
 import React from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {auth} from '../../firebase/firebaseInit';
+import {auth} from '@/config/firebaseInit';
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
-import Navbar from '../../components/Navbar';
+import Navbar from '@/components/Navbar';
 
 async function signInHandler(email:string, password:string) {
     let result = null;
@@ -45,7 +46,7 @@ export default function SignUp() {
                     <p>Password</p>
                     <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" placeholder="password" />
                 </label>
-                <button type="submit">Sign up</button>
+                <button className = 'text-white' type="submit">Sign up</button>
             </form>
         </>
     );

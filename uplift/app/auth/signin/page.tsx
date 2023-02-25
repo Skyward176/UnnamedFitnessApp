@@ -1,10 +1,11 @@
+'use client'
 import React from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import {auth} from '../../firebase/firebaseInit';
+import {auth} from '@/config/firebaseInit';
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
 import Link from 'next/link'
-import Navbar from '../../components/Navbar';
+import Navbar from '@/components/Navbar';
 
 async function signInHandler(email:string, password:string) {
     let result = null;
