@@ -1,0 +1,29 @@
+{
+    'Users': {
+        'user_id': int,
+        'age': int,
+        'first': string,
+        'last': string,
+        'routines': []:int,
+        'active_routines': []:int 
+    },
+    'Routines': {
+        'routine_id': int,
+        'description': string,
+        'weeks': []:days[]:exercises[]:int,
+        'posted_by': int,
+        'tags' = []:string,
+    },
+    'Reviews': {
+        'routine_id': int,
+        'posted_by': int,
+        'rating': int,
+        'comments': string
+    },
+    'Exercises': {
+        'exercise_id': int,
+        'name': string,
+        'muscle_group': string
+        'description': string,
+    }
+}
