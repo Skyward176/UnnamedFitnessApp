@@ -1,6 +1,7 @@
+// CURRENTLY DOESN'T WORK!!!
 import {firebase_app}from '@/config/firebaseInit';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore } from 'firebase/firestore/lite';
 
 const db = getFirestore(firebase_app);
 
-export {db, collection, getDocs};
+export default db;

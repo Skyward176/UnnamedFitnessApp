@@ -1,17 +1,33 @@
 'use client'
-import React from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {auth} from '@/config/firebaseInit';
-import {useRouter} from 'next/navigation';
 import {useState} from 'react';
+
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, collection, getFirestore} from 'firebase/firestore'
+
+import {useRouter} from 'next/navigation';
 import Navbar from '@/components/Navbar';
+
+import {auth, firebase_app} from '@/config/firebaseInit';
+//import {db} from '@/config/database';
+
 
 async function signInHandler(email:string, password:string) {
     let result = null;
     let error = null;
 
     try {
-        result = await createUserWithEmailAndPassword(auth, email, password);
+        result = await createUserWithEmailAndPassword(auth, email, password).then(()=> {
+            let data = {
+                email: email,
+            }
+            let db = getFirestore(firebase_app);
+            let docRef = doc(db, 'users', auth.currentUser.uid);
+            setDoc(docRef, data).then(() => {
+                console.log("added user");
+            }).catch ((e1) => {
+                console.log(e1);
+            });
+        });
     } catch (e) {
         error = e;
     }
