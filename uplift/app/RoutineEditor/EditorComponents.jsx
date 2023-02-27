@@ -1,11 +1,12 @@
 'use client'
-import {HiBars3, HiPlus, HiOutlineDocumentDuplicate} from 'react-icons/hi2';
+import {HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark} from 'react-icons/hi2';
 const Week = ({children}) => {
     //testing purposes
     let number=1;
     return(
         <>
             <div className='flex items-center'>
+                <button><HiXMark color='red' size='1.75rem'/></button>
                 <HiBars3 size='1.75rem'/>
                 <HiPlus size='1.75rem'/>
                 <p className='font-sans font-light text-2xl ml-2'>Week {number}</p>
@@ -18,6 +19,7 @@ const Exercise = () => {
     return(
         <>
             <div className=' px-7 flex items-center'>
+                <button><HiXMark color='red' size='1.75rem'/></button>
                 <HiBars3 size='1.75rem'/>
                 <div className='flex'>
                     <input type='text' className='w-1/4 appearance-none bg-black mx-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '></input>
@@ -36,12 +38,15 @@ const Day = ({children}) => {
     return(
         <div className='px-7'>
             <div className='flex items-center'>
+                <button><HiXMark color='red' size='1.75rem'/></button>
                 <HiBars3 size='1.75rem'/>
                 <HiOutlineDocumentDuplicate size='1.75rem'/>
                 <HiPlus size='1.75rem'/>
                 <p className='font-sans font-light text-2xl ml-2'>Day {number}</p>
             </div>
-            {children}
+            <div className='flex flex-col w-fit my-2'>
+                {children}
+            </div>
         </div>
     );
 }
@@ -63,5 +68,13 @@ const DescriptionForm = () => {
         </div>
     );
 }
- 
-export {Week, Day, Exercise, DescriptionForm};
+const AddDayButton = () => {
+    return(
+        <button className='self-center'>
+            <div className='flex border-2 w-12 rounded justify-center items-center my-4'>
+                <HiPlus size='1.75rem'/>
+            </div>
+        </button>
+    );
+} 
+export {Week, Day, Exercise, DescriptionForm, AddDayButton};

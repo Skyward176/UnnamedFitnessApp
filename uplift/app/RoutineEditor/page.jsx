@@ -1,7 +1,9 @@
 'use client'
 import Navbar from '@/components/Navbar';
-import {Day, Week, Exercise, DescriptionForm} from './EditorComponents';
-import {useState} from 'react';
+import {Day, Week, Exercise, DescriptionForm, AddDayButton} from './EditorComponents';
+import {useState, useEffect} from 'react';
+import {firebase_app, auth} from '@/config/firebaseInit';
+import {getFirestore, collection,doc, addDoc} from 'firebase/firestore';
 export default function RoutineEditor() {
     //use state for temp storing routine changes
     // state will look like a nested object 
@@ -24,6 +26,28 @@ export default function RoutineEditor() {
     //             }
     //     ]    }
     // }
+    
+    // create new routine with the authenticated user's UID on page load.
+
+
+    useEffect(() => {
+        //get db
+        const db = getFirestore(firebase_app);
+        //async create doc function
+        const createRoutine = async (db) => {
+            const newRoutine = await addDoc(collection(db, 'routines'), {
+                description:'',
+                posted_by:auth.currentUser.uid,
+                tags:[],
+                title:'',
+            });
+            //save docref to state
+            setRoutineData(newRoutine);
+        }
+        //call method, catch error
+        createRoutine(db).catch(console.error);;
+    }, []);
+
     const [routineData, setRoutineData] = useState();
     
     const renameDay = () => {
@@ -66,6 +90,7 @@ export default function RoutineEditor() {
                             <Day>
                                 <Exercise />
                                 <Exercise />
+                                <AddDayButton/>
                             </Day>
                         </Week>
                     </div>
