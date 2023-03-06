@@ -29,13 +29,18 @@ const Day = (props) => {
             title: e.target.value
         });
     }
+    const handleDelete= () => {
+        if(props.dayCount>1){
+            props.deleteDay(props.data);
+        }
+    }
     return(
         <div className='px-7'>
             <div className='flex items-center'>
-                <button><HiXMark color='red' size='1.75rem'/></button>
+                <button onClick={handleDelete}><HiXMark color='red' size='1.75rem'/></button>
                 <HiBars3 size='1.75rem'/>
                 <HiOutlineDocumentDuplicate size='1.75rem'/>
-                <HiPlus size='1.75rem'/>
+                <button onClick={props.newDayHandler}><HiPlus size='1.75rem'/></button>
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='flex flex-col w-fit my-2'>

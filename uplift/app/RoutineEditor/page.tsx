@@ -122,7 +122,7 @@ export default function RoutineEditor() {
             <div className='w-screen grow flex lg:flex-row flex-col text-white '>
                 <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
                     {weeks.map((week) => <div className='h-full p-4 block w-full'>
-                                            <Week weekCount={weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.id}/>
+                                            <Week routineRef ={docRef} weekCount={weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.id}/>
                                             </div>)}
                 </div>
                 <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>

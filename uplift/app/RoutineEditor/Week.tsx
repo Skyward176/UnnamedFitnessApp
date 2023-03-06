@@ -1,7 +1,7 @@
 'use client'
 import {HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark} from 'react-icons/hi2';
 import {useEffect, useState} from 'react';
-import {getDoc, updateDoc} from 'firebase/firestore';
+import {getDoc, updateDoc, addDoc, collection, arrayUnion,arrayRemove, deleteDoc} from 'firebase/firestore';
 import Day from './Day'
 const Week = (props) => {
     const [data, setData] = useState({
@@ -35,6 +35,45 @@ const Week = (props) => {
             props.deleteWeek(weekRef);
         }
     }
+    const newDayHandler = () => {
+        const createDoc = async (routineRef) => {
+            const newDay = await addDoc(collection(routineRef, 'days'), {
+                exercises:[],
+            });
+            const newExercise = await addDoc(collection(routineRef, 'exercises'), {
+                name:'',
+                reps:0,
+                sets:0,
+            });
+            await updateDoc(newDay, {
+                exercises: [newExercise]
+            })
+            await updateDoc(weekRef, {
+                days: arrayUnion(newDay)
+            })
+            let newDays =  [...data.days, newDay];
+            setData({...data, days: newDays
+
+            });
+        }
+        console.log("Create Day Fired");
+        createDoc(props.routineRef);
+    }
+    const deleteDay = (ref) => {
+        deleteDoc(ref);
+        updateDoc(weekRef, {
+            days: arrayRemove(ref)
+        })
+        setData({
+            title: data.title,
+            days: data.days.filter(function (day){
+                    return day!=ref
+                })
+            }
+       )
+        console.log(ref);
+        getDoc(weekRef).then((data)=>console.log(data.data().days))
+    }
     return(
         <>
             <div className='flex items-center'>
@@ -44,7 +83,7 @@ const Week = (props) => {
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='h-full p-4 block w-full'>
-                {data.days.map(day => <Day data={day}/>)}
+                {data.days.map(day => <Day dayCount={data.days.length}deleteDay={deleteDay} newDayHandler={newDayHandler} data={day}/>)}
             </div>
         </>
     );
