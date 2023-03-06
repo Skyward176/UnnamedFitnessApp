@@ -38,10 +38,15 @@ const Exercise = (props) => {
             reps: Number(e.target.value)
         });
     }
+    const handleDelete= () => {
+        if(props.exerciseCount>1){
+            props.deleteExercise(props.data);
+        }
+    }
     return(
         <>
             <div className=' px-7 flex items-center'>
-                <button><HiXMark color='red' size='1.75rem'/></button>
+                <button onClick={handleDelete}><HiXMark color='red' size='1.75rem'/></button>
                 <HiBars3 size='1.75rem'/>
                 <button onClick={props.newExerciseHandler}><HiPlus size='1.75rem'/></button>
                 <div className='flex'>
