@@ -4,7 +4,7 @@ import Week from './Week';
 import DescriptionForm from './DescriptionForm';
 import {useState, useEffect} from 'react';
 import {firebase_app, auth} from '@/config/firebaseInit';
-import {getFirestore, collection,getDoc,deleteDoc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
+import {getFirestore, collection,getDoc,deleteDoc,doc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
 export default function RoutineEditor() {
 
     const [routineData, setRoutineData] = useState({
@@ -102,22 +102,19 @@ export default function RoutineEditor() {
             let newWeeks =  [...weeks, newWeek];
             setWeeks(newWeeks);
         }
+        console.log("Create Week Fired");
         createDoc(docRef);
     }
-    const deleteWeekHandler = (weekRef) => {
-        const readIds = async(array) => {
-            const readPromises = array.map(id => getDoc(id));
-            const result = await Promise.all(readPromises);
-            return result.map(doc => doc.data());
-        }
-        const deleteWeek = async (weekRef) => {
-            const document = await getDoc(weekRef);
-            const days = readIds(document.data().days);
-            console.log(days);
-            //deleteDoc(weekRef);
-        }
-        console.log('did something');
-        deleteWeek(weekRef);
+    const deleteWeek = (ref) => {
+        deleteDoc(ref);
+        updateDoc(docRef, {
+            weeks: arrayRemove(ref)
+        })
+        setWeeks(weeks.filter(function (week){
+            return week!=ref
+        }))
+        console.log(ref);
+        getDoc(docRef).then((data)=>console.log(data.data().weeks))
     }
     return(
         <div className='flex flex-col flex-wrap h-full w-full'>
@@ -125,7 +122,7 @@ export default function RoutineEditor() {
             <div className='w-screen grow flex lg:flex-row flex-col text-white '>
                 <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
                     {weeks.map((week) => <div className='h-full p-4 block w-full'>
-                                            <Week deleteWeekHandler={deleteWeekHandler} newWeekHandler={newWeekHandler} data={week} key={week.id}/>
+                                            <Week weekCount={weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.id}/>
                                             </div>)}
                 </div>
                 <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>

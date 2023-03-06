@@ -8,6 +8,7 @@ const Week = (props) => {
         days:[],
         title:'Unnamed',
     })
+    const [weekRef, setWeekRef] = useState();
     useEffect(() => {
         const readIds = async(array) => {
             const readPromises = array.map(id => getDoc(id));
@@ -21,6 +22,7 @@ const Week = (props) => {
             setData(fetchedData);
         }
         resolveData(props.data);
+        setWeekRef(props.data);
     },[props])
 
     const handleTitleChange= (e) =>{
@@ -28,10 +30,15 @@ const Week = (props) => {
             title: e.target.value
         });
     }
+    const deleteHandler = (e) => {
+        if(props.weekCount>1){
+            props.deleteWeek(weekRef);
+        }
+    }
     return(
         <>
             <div className='flex items-center'>
-                <button onClick={props.deleteWeekHandler(data)}><HiXMark color='red' size='1.75rem'/></button>
+                <button onClick={deleteHandler}><HiXMark color='red' size='1.75rem'/></button>
                 <HiBars3 size='1.75rem'/>
                 <button onClick={props.newWeekHandler}><HiPlus size='1.75rem'/></button>
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
