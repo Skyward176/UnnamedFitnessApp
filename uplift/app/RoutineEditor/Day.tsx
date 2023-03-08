@@ -4,6 +4,7 @@ import {useState, useEffect} from 'react';
 import {getDoc} from 'firebase/firestore';
 import Exercise from './Exercise';
 import {updateDoc, deleteDoc, arrayUnion, arrayRemove, addDoc,collection} from 'firebase/firestore'
+import {auth} from '@/config/firebaseInit';
 const Day = (props) => {
     const [data, setData] = useState({
         exercises:[],
@@ -39,6 +40,7 @@ const Day = (props) => {
     const newExerciseHandler = () => {
         const createDoc = async (routineRef) => {
             const newExercise = await addDoc(collection(routineRef, 'exercises'), {
+                uid:auth.currentUser.uid,
                 name:'',
                 reps:0,
                 sets:0,
@@ -73,8 +75,6 @@ const Day = (props) => {
         <div className='px-7'>
             <div className='flex items-center'>
                 <button onClick={handleDelete}><HiXMark color='red' size='1.75rem'/></button>
-                <HiBars3 size='1.75rem'/>
-                <HiOutlineDocumentDuplicate size='1.75rem'/>
                 <button onClick={props.newDayHandler}><HiPlus size='1.75rem'/></button>
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>

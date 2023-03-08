@@ -27,20 +27,25 @@ export default function RoutineEditor() {
 
         const createRoutine = async (db) => {
             const newRoutine = await addDoc(collection(db, 'routines'), {
-                description:'',
-                posted_by:auth.currentUser.uid,
+                description:'Type Your Description Here',
+                uid:auth.currentUser.uid,
                 tags:[],
-                title:'',
+                title:'Title',
                 weeks: [],
             });
             const firstWeek = await addDoc(collection(newRoutine, 'weeks'), {
                 days:[],
+                title:'Week',
+                uid:auth.currentUser.uid
             });
             const firstDay = await addDoc(collection(newRoutine, 'days'), {
+                uid:auth.currentUser.uid,
                 exercises:[],
+                title:'Day'
             });
             const firstExercise = await addDoc(collection(newRoutine, 'exercises'), {
-                name:'',
+                uid:auth.currentUser.uid,
+                name:'Exercise',
                 reps:0,
                 sets:0,
             });
@@ -79,13 +84,16 @@ export default function RoutineEditor() {
     const newWeekHandler = () => {
         const createDoc = async (docRef) => {
             const newWeek = await addDoc(collection(docRef, 'weeks'), {
+                uid:auth.currentUser.uid,
                 days:[],
                 title:''
             });
             const newDay = await addDoc(collection(docRef, 'days'), {
+                uid:auth.currentUser.uid,
                 exercises:[],
             });
             const newExercise = await addDoc(collection(docRef, 'exercises'), {
+                uid:auth.currentUser.uid,
                 name:'',
                 reps:0,
                 sets:0,

@@ -47,7 +47,6 @@ const Exercise = (props) => {
         <>
             <div className=' px-7 flex items-center'>
                 <button onClick={handleDelete}><HiXMark color='red' size='1.75rem'/></button>
-                <HiBars3 size='1.75rem'/>
                 <button onClick={props.newExerciseHandler}><HiPlus size='1.75rem'/></button>
                 <div className='flex'>
                     <input type='text' onBlur={handleTitleChange} placeholder = {data.name} className='w-1/4 appearance-none bg-black mx-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '>
