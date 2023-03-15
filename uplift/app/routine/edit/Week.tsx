@@ -5,38 +5,21 @@ import {getDoc, updateDoc, addDoc, collection, arrayUnion,arrayRemove, deleteDoc
 import {auth} from '@/config/firebaseInit';
 import Day from './Day'
 const Week = (props) => {
-    const [data, setData] = useState({
-        days:[],
-        title:'Unnamed',
-    })
-    const [weekRef, setWeekRef] = useState();
+    const [data, setData] = useState(props.data)
     useEffect(() => {
-        const readIds = async(array) => {
-            const readPromises = array.map(id => getDoc(id));
-            const result = await Promise.all(readPromises);
-            return result.map(doc => doc.data());
-        }
-        const resolveData = async (data) => {
-            let fetchedData= await getDoc(data);
-            fetchedData = fetchedData.data()
-            //const resolvedData = await readIds(fetchedData);
-            setData(fetchedData);
-        }
-        resolveData(props.data);
-        setWeekRef(props.data);
-    },[props])
+    },[])
 
-    const handleTitleChange= (e) =>{
+    const handleTitleChange= (e) =>{//needs rewrite
         updateDoc(props.data, {
             title: e.target.value
         });
     }
-    const deleteHandler = (e) => {
+    const deleteHandler = (e) => {//needs rewrite
         if(props.weekCount>1){
             props.deleteWeek(weekRef);
         }
     }
-    const newDayHandler = () => {
+    const newDayHandler = () => { //needs rewrite
         const createDoc = async (routineRef) => {
             const newDay = await addDoc(collection(routineRef, 'days'), {
                 uid:auth.currentUser.uid,
@@ -62,7 +45,7 @@ const Week = (props) => {
         console.log("Create Day Fired");
         createDoc(props.routineRef);
     }
-    const deleteDay = (ref) => {
+    const deleteDay = (ref) => {//needs rewrite
         deleteDoc(ref);
         updateDoc(weekRef, {
             days: arrayRemove(ref)
@@ -85,7 +68,7 @@ const Week = (props) => {
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='h-full p-4 block w-full'>
-                {data.days.map(day => <Day routineRef={props.routineRef} dayCount={data.days.length}deleteDay={deleteDay} newDayHandler={newDayHandler} data={day}/>)}
+                {Object.entries(data.days).map(([key,value]) => <Day routineRef={props.routineRef} dayCount={Object.keys(data.days).length} deleteDay={deleteDay} newDayHandler={newDayHandler} data={value} key={key}/>)}
             </div>
         </>
     );

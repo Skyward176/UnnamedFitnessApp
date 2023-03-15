@@ -1,27 +1,9 @@
 'use client'
 import {HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark} from 'react-icons/hi2';
-import {useState, useEffect} from 'react';
+import {useState } from 'react';
 import {getDoc, updateDoc} from 'firebase/firestore';
 const Exercise = (props) => {
-    const [data, setData] = useState({
-        name:'',
-        sets:0,
-        reps:0
-    })
-    useEffect(() => {
-        const readIds = async(array) => {
-            const readPromises = array.map(id => getDoc(id));
-            const result = await Promise.all(readPromises);
-            return result.map(doc => doc.data());
-        }
-        const resolveData = async (data) => {
-            let fetchedData= await getDoc(data);
-            fetchedData = fetchedData.data()
-            //const resolvedData = await readIds(fetchedData);
-            setData(fetchedData);
-        }
-        resolveData(props.data);
-    },[props])
+    const [data, setData] = useState(props.data);
 
     const handleTitleChange= (e) =>{
         updateDoc(props.data, {

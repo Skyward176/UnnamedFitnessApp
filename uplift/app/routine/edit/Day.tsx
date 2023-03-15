@@ -6,38 +6,21 @@ import Exercise from './Exercise';
 import {updateDoc, deleteDoc, arrayUnion, arrayRemove, addDoc,collection} from 'firebase/firestore'
 import {auth} from '@/config/firebaseInit';
 const Day = (props) => {
-    const [data, setData] = useState({
-        exercises:[],
-        title: '',
-    })
-    const [dayRef, setDayRef] = useState();
+    const [data, setData] = useState(props.data)
     useEffect(() => {
-        const readIds = async(array) => {
-            const readPromises = array.map(id => getDoc(id));
-            const result = await Promise.all(readPromises);
-            return result.map(doc => doc.data());
-        }
-        const resolveData = async (data) => {
-            let fetchedData= await getDoc(data);
-            fetchedData = fetchedData.data()
-            //const resolvedData = await readIds(fetchedData);
-            setData(fetchedData);
-        }
-        resolveData(props.data);
-        setDayRef(props.data);
-    },[props])
+    },[])
 
     const handleTitleChange= (e) =>{
         updateDoc(props.data, {
             title: e.target.value
         });
     }
-    const handleDelete= () => {
+    const handleDelete= () => {// need rewrite
         if(props.dayCount>1){
             props.deleteDay(props.data);
         }
     }
-    const newExerciseHandler = () => {
+    const newExerciseHandler = () => {// need rewrite
         const createDoc = async (routineRef) => {
             const newExercise = await addDoc(collection(routineRef, 'exercises'), {
                 uid:auth.currentUser.uid,
@@ -56,7 +39,7 @@ const Day = (props) => {
         console.log("Create Exercise Fired");
         createDoc(props.routineRef);
     }
-    const deleteExercise= (ref) => {
+    const deleteExercise= (ref) => {//need rewrite
         deleteDoc(ref);
         updateDoc(dayRef, {
             exercises: arrayRemove(ref)
@@ -79,7 +62,7 @@ const Day = (props) => {
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='flex flex-col w-fit my-2'>
-                {data.exercises.map(exercise => <Exercise exerciseCount={data.exercises.length} deleteExercise ={deleteExercise} newExerciseHandler={newExerciseHandler} data = {exercise}/>)} 
+                {Object.entries(data.exercises).map(([key, value])=> <Exercise exerciseCount={Object.entries(data.exercises).length} deleteExercise ={deleteExercise} newExerciseHandler={newExerciseHandler} key = {key} data = {value}/>)} 
             </div>
         </div>
     );

@@ -30,16 +30,20 @@ export default function RoutineEditor() {
             weekOrder: [1],
             weeks: {
                 1:{
+                    title: 'Week 1',
                     weekId: 1,
-                    dayOrder: [],
+                    dayOrder: [1],
                     days: {
                         1: {
+                            title: 'Day 1',
                             dayId: 1,
                             exerciseOrder: [1],
                             exercises: {
                                 1: {
                                     exerciseId: 1,
-                                    name: 'Bench Press'
+                                    name: 'Bench Press',
+                                    sets: 0,
+                                    reps: 0
                                 }
                             }
                         }
@@ -52,7 +56,6 @@ export default function RoutineEditor() {
         setDocRef(newRoutine);
         let currentData = await getDoc(newRoutine);
         setRoutineData(currentData.data());
-        setWeeks(currentData.data().weeks);
     }
 
     // on page load, check params to determine creation of new routine, else grab routine reference passed through params
@@ -76,7 +79,7 @@ export default function RoutineEditor() {
     const changeDescription = (e) => {
         routineData.description=e.target.value; 
     }
-    const newWeekHandler = () => {
+    const newWeekHandler = () => {// needs rewrite
         const createDoc = async (docRef) => {
             const newWeek = await addDoc(collection(docRef, 'weeks'), {
                 uid:auth.currentUser.uid,
@@ -108,7 +111,7 @@ export default function RoutineEditor() {
         console.log("Create Week Fired");
         createDoc(docRef);
     }
-    const deleteWeek = (ref) => {
+    const deleteWeek = (ref) => { //needs rewrite
         deleteDoc(ref);
         updateDoc(docRef, {
             weeks: arrayRemove(ref)
@@ -124,8 +127,8 @@ export default function RoutineEditor() {
             <Navbar />
             <div className='w-screen grow flex lg:flex-row flex-col text-white '>
                 <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
-                    {weeks.map((week) => <div className='h-full p-4 block w-full'>
-                                            <Week routineRef ={docRef} weekCount={weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.id}/>
+                    {Object.entries(routineData.weeks).map(([key, value]) => <div className='h-full p-4 block w-full'>
+                                            <Week routineRef ={docRef} weekCount={Object.keys(routineData.weeks).length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={value} key={key}/>
                                             </div>)}
                 </div>
                 <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
