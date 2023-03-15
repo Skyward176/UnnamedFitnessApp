@@ -5,68 +5,63 @@ import DescriptionForm from './DescriptionForm';
 import {useState, useEffect} from 'react';
 import {firebase_app, auth} from '@/config/firebaseInit';
 import {getFirestore, collection,getDoc,deleteDoc,doc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
+import { useSearchParams, useRouter } from 'next/navigation'
 export default function RoutineEditor() {
 
+    // state variables
     const [routineData, setRoutineData] = useState({
         title: '',
         weeks:[]
     });
     const [docRef, setDocRef] = useState();
     const [weeks, setWeeks] = useState([]);
-    // create new routine with the authenticated user's UID on page load.
+    
+    // db ref
+    const db = getFirestore(firebase_app);
 
+    // router
+    const router = useRouter();
+    // parameters to control creation of routine
+    const searchParams = useSearchParams();
 
+    // routine creation function
+    const createRoutine = async (db) => {
+        const newRoutine = await addDoc(collection(db, 'routines'), {
+            weekOrder: [1],
+            weeks: {
+                1:{
+                    weekId: 1,
+                    dayOrder: [],
+                    days: {
+                        1: {
+                            dayId: 1,
+                            exerciseOrder: [1],
+                            exercises: {
+                                1: {
+                                    exerciseId: 1,
+                                    name: 'Bench Press'
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        });
+        console.log("Created new routine");
+        //save docref to state
+        setDocRef(newRoutine);
+        let currentData = await getDoc(newRoutine);
+        setRoutineData(currentData.data());
+        setWeeks(currentData.data().weeks);
+    }
+
+    // on page load, check params to determine creation of new routine, else grab routine reference passed through params
+    // use
     useEffect(() => {
-        //get db
-        const db = getFirestore(firebase_app);
-        //async create doc function
-
-
-        // join array of ids to collection
-
-
-        const createRoutine = async (db) => {
-            const newRoutine = await addDoc(collection(db, 'routines'), {
-                description:'Type Your Description Here',
-                uid:auth.currentUser.uid,
-                tags:[],
-                title:'Title',
-                weeks: [],
-            });
-            const firstWeek = await addDoc(collection(newRoutine, 'weeks'), {
-                days:[],
-                title:'Week',
-                uid:auth.currentUser.uid
-            });
-            const firstDay = await addDoc(collection(newRoutine, 'days'), {
-                uid:auth.currentUser.uid,
-                exercises:[],
-                title:'Day'
-            });
-            const firstExercise = await addDoc(collection(newRoutine, 'exercises'), {
-                uid:auth.currentUser.uid,
-                name:'Exercise',
-                reps:0,
-                sets:0,
-            });
-            updateDoc(firstDay, {
-                exercises: [firstExercise]
-            })
-            updateDoc(firstWeek, {
-                days: [firstDay]
-            })
-            updateDoc(newRoutine, {
-                weeks: [firstWeek]
-            })
-            console.log("Created new routine");
-            //save docref to state
-            setDocRef(newRoutine);
-            let currentData = await getDoc(newRoutine);
-            setRoutineData(currentData.data());
-            setWeeks(currentData.data().weeks);
+        if(searchParams.get('newRoutine')) {
+            createRoutine(db).catch(console.error);
+            router.push('routine/edit', undefined,{shallow: true})
         }
-        //call method, catch error
-        createRoutine(db).catch(console.error);;
     }, []);
 
     const saveDetails = (e) => {
