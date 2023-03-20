@@ -39,7 +39,7 @@ export default function Signin() {
         <div className='h-full flex flex-col'>
             <Navbar />
             <div className='w-full flex flex-col flex-grow items-center justify-center'>
-                <div className = 'flex flex-col w-1/4 ' onSubmit={handleSignInForm}>
+                <form className = 'flex flex-col w-1/4 ' onSubmit={handleSignInForm}>
                     <label className = 'font-light font-sans text-white text-2xl' htmlFor="email">
                         Email: 
                         <input className='w-full font-light font-sans text-2xl appearance-none bg-black mx-2 my-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 ' 
@@ -55,9 +55,9 @@ export default function Signin() {
                         <Link href='auth/signup'> <p className='text-white'>Don't have an account? </p></Link>
                     </div>
                     <div className='my-2 flex w-full items-center justify-center'>
-                        <button className = 'text-white font-sans font-light text-2xl bg-black border border-accent-100 rounded w-1/4' type="submit">Sign In</button>
+                        <button className = 'text-white font-sans font-light text-2xl bg-black border border-accent-100 rounded w-24' type="submit">Sign In</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );

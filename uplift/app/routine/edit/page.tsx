@@ -6,16 +6,29 @@ import {useState, useEffect} from 'react';
 import {firebase_app, auth} from '@/config/firebaseInit';
 import {getFirestore, collection,getDoc,deleteDoc,doc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation'
+import {RoutineContext} from '@/context/RoutineContext';
+
 export default function RoutineEditor() {
 
     // state variables
     const [routineData, setRoutineData] = useState({
-        title: '',
-        description: ''
+        uid: 0,
+        title: "",
+        description: "",
+        weeks: [{
+            title: "",
+            days: [{
+                title: "",
+                exercises: [{
+                    name: "",
+                    sets: 0,
+                    reps: 0
+                }],
+            }],
+        }],
     });
     const [docRef, setDocRef] = useState();
 
-    const [weeks, setWeeks] = useState([]); // local state of the weeks array
     
     // db ref
     const db = getFirestore(firebase_app);
@@ -49,12 +62,12 @@ export default function RoutineEditor() {
         setDocRef(newRoutine);
         let currentData = await getDoc(newRoutine);
         currentData = currentData.data();
-        setRoutineData({ // save basic routine details to state
+        setRoutineData({
+            uid: currentData.uid,
             title: currentData.title,
-            description: currentData.description
+            description: currentData.description,
+            weeks: currentData.weeks
         });
-        // save weeks array to state
-        setWeeks(currentData.weeks);
     }
 
     // on page load, check params to determine creation of new routine, else grab routine reference passed through params
@@ -85,7 +98,7 @@ export default function RoutineEditor() {
                     days: [{
                             title: "newDay",
                             exercises: [{
-                                    title: "",
+                                    name: "",
                                     sets: 0,
                                     reps: 0
                                 }
@@ -93,43 +106,51 @@ export default function RoutineEditor() {
                         }
                     ]
                 }
-            let newWeeks = [...weeks, newWeek]
-            setWeeks(newWeeks);
+            let newWeeks = [...routineData.weeks, newWeek]
             await updateDoc(docRef, {
                 weeks: newWeeks
             })
+            setRoutineData({
+                ...routineData,
+                weeks:newWeeks
+            });
         }
         console.log("Create Week Fired");
         createWeek(docRef);
     }
     const deleteWeek = (docRef, data) => {
         const removeWeek = async () => {
-            let newWeeks = weeks.filter(function (week) {
+            let newWeeks = routineData.weeks.filter(function (week) {
                 return(week!=data);
             });
-            setWeeks(newWeeks);
+            setRoutineData({
+                ...routineData,
+                weeks:newWeeks
+            });
             await updateDoc(docRef, {
                 weeks: newWeeks
             })
         }
         removeWeek();
-        getDoc(docRef).then((data)=>console.log(data.data().weeks))
+        getDoc(docRef).then((data) => {setRoutineData(data.data()); console.log(data.data())})
     }
     return(
-        <div className='flex flex-col flex-wrap h-full w-full'>
+        <div className='flex flex-col flex-wrap h-full w-full overflow-hidden'>
                 <Navbar />
-                <div className='w-screen grow flex lg:flex-row flex-col text-white '>
-                    <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
-                        {weeks.map((week, i) => <div className='h-full p-4 block w-full'>
-                                                <Week routineRef ={docRef} weekCount={weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={i}/>
-                                                </div>)}
-                    </div>
-                    <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
-                        <div className='h-full p-4 block w-full'>
-                            <DescriptionForm saveFunction={saveDetails} title={routineData.title} changeTitle={changeTitle} changeDescription={changeDescription} description={routineData.description}/>
+                <RoutineContext.Provider value={[routineData, setRoutineData]}>
+                    <div className='w-screen grow flex lg:flex-row flex-col text-white '>
+                        <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
+                            {routineData.weeks.map((week, i) => <div className='h-full p-4 block w-full'>
+                                                    <Week index={i} routineRef ={docRef} weekCount={routineData.weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week}/>
+                                                    </div>)}
+                        </div>
+                        <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
+                            <div className='h-full p-4 block w-full'>
+                                <DescriptionForm saveFunction={saveDetails} title={routineData.title} changeTitle={changeTitle} changeDescription={changeDescription} description={routineData.description}/>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </RoutineContext.Provider>
         </div>
     );
 }
