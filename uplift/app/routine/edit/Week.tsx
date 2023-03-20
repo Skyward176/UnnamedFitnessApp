@@ -9,12 +9,11 @@ const Week = (props) => {
     useEffect(() => {
     },[])
 
-    const handleTitleChange= (e) =>{//needs rewrite
-        updateDoc(props.data, {
-            title: e.target.value
+    const handleTitleChange= (e) =>{
+        updateDoc(props.routineRef, {
         });
     }
-    const deleteHandler = (e) => {//needs rewrite
+    const deleteHandler = (e) => {
         if(props.weekCount>1){
             props.deleteWeek(props.routineRef,data);
         }
