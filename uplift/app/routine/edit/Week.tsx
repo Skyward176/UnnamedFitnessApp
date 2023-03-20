@@ -5,7 +5,7 @@ import {getDoc, updateDoc, addDoc, collection, arrayUnion,arrayRemove, deleteDoc
 import {auth} from '@/config/firebaseInit';
 import Day from './Day'
 const Week = (props) => {
-    const [data, setData] = useState(props.data)
+    const [data, setData] = useState(props.data);
     useEffect(() => {
     },[])
 
@@ -16,7 +16,7 @@ const Week = (props) => {
     }
     const deleteHandler = (e) => {//needs rewrite
         if(props.weekCount>1){
-            props.deleteWeek(weekRef);
+            props.deleteWeek(props.routineRef,data);
         }
     }
     const newDayHandler = () => { //needs rewrite
