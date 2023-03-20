@@ -72,14 +72,6 @@ export default function RoutineEditor() {
     const newWeekHandler = () => {
         
         const createWeek= async (docRef) => {
-            const updateDoc(docRef, {
-                weeks{
-                    weekOrder: arrayUnion(),
-                    2: {
-
-                    }
-                }
-            })
             const newWeek = await addDoc(collection(docRef, 'weeks'), {
                 uid:auth.currentUser.uid,
                 days:[],
@@ -126,8 +118,8 @@ export default function RoutineEditor() {
             <Navbar />
             <div className='w-screen grow flex lg:flex-row flex-col text-white '>
                 <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
-                    {Object.entries(routineData.weeks).map(([key, value]) => <div className='h-full p-4 block w-full'>
-                                            <Week routineRef ={docRef} weekCount={Object.keys(routineData.weeks).length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={value} key={key}/>
+                    {routineData.weeks.map((week) => <div className='h-full p-4 block w-full'>
+                                            <Week routineRef ={docRef} weekCount={routineData.weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.title}/>
                                             </div>)}
                 </div>
                 <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>

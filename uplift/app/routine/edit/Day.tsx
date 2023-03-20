@@ -62,7 +62,7 @@ const Day = (props) => {
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='flex flex-col w-fit my-2'>
-                {Object.entries(data.exercises).map(([key, value])=> <Exercise exerciseCount={Object.entries(data.exercises).length} deleteExercise ={deleteExercise} newExerciseHandler={newExerciseHandler} key = {key} data = {value}/>)} 
+                {data.exercises.map((exercise)=> <Exercise exerciseCount={data.exercises.length} deleteExercise ={deleteExercise} newExerciseHandler={newExerciseHandler} key = {exercise.name} data = {exercise}/>)} 
             </div>
         </div>
     );

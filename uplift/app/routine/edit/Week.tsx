@@ -68,7 +68,7 @@ const Week = (props) => {
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='h-full p-4 block w-full'>
-                {Object.entries(data.days).map(([key,value]) => <Day routineRef={props.routineRef} dayCount={Object.keys(data.days).length} deleteDay={deleteDay} newDayHandler={newDayHandler} data={value} key={key}/>)}
+                {data.days.map((day) => <Day routineRef={props.routineRef} dayCount={data.days.length} deleteDay={deleteDay} newDayHandler={newDayHandler} data={day} key={day.title}/>)}
             </div>
         </>
     );
