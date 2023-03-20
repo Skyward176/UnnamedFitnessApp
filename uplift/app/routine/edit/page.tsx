@@ -27,29 +27,19 @@ export default function RoutineEditor() {
     // routine creation function
     const createRoutine = async (db) => {
         const newRoutine = await addDoc(collection(db, 'routines'), {
-            weekOrder: [1],
-            weeks: {
-                1:{
-                    title: 'Week 1',
-                    weekId: 1,
-                    dayOrder: [1],
-                    days: {
-                        1: {
-                            title: 'Day 1',
-                            dayId: 1,
-                            exerciseOrder: [1],
-                            exercises: {
-                                1: {
-                                    exerciseId: 1,
-                                    name: 'Bench Press',
-                                    sets: 0,
-                                    reps: 0
-                                }
-                            }
-                        }
-                    }
-                },
-            }
+            uid: auth.currentUser.uid,
+            weeks: [{
+                title: 'Week 1',
+                days: [{
+                    title: 'Day 1',
+                    exercises: [{
+                        exerciseId: 1,
+                        name: 'Bench Press',
+                        sets: 0,
+                        reps: 0
+                    }],
+                }],
+            }],
         });
         console.log("Created new routine");
         //save docref to state
@@ -79,8 +69,17 @@ export default function RoutineEditor() {
     const changeDescription = (e) => {
         routineData.description=e.target.value; 
     }
-    const newWeekHandler = () => {// needs rewrite
-        const createDoc = async (docRef) => {
+    const newWeekHandler = () => {
+        
+        const createWeek= async (docRef) => {
+            const updateDoc(docRef, {
+                weeks{
+                    weekOrder: arrayUnion(),
+                    2: {
+
+                    }
+                }
+            })
             const newWeek = await addDoc(collection(docRef, 'weeks'), {
                 uid:auth.currentUser.uid,
                 days:[],
