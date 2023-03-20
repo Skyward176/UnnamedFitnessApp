@@ -11,7 +11,7 @@ import {auth, firebase_app} from '@/config/firebaseInit';
 //import {db} from '@/config/database';
 
 
-async function signInHandler(email:string, password:string) {
+async function signUpHandler(email:string, password:string) {
     let result = null;
     let error = null;
 
@@ -40,9 +40,9 @@ export default function SignUp() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter();
-    const handleSignInForm = async(event:any) => {
+    const handleSignUpForm = async(event:any) => {
         event.preventDefault();
-        const {result, error } = await signInHandler(email, password);
+        const {result, error } = await signUpHandler(email, password);
         if(error) {
             return(console.log(error));
         }
@@ -52,18 +52,27 @@ export default function SignUp() {
     }
     return(
         <>
+        <div className='h-full flex flex-col'>
             <Navbar />
-            <form onSubmit={handleSignInForm}>
-                <label htmlFor="email">
-                    <p>Email</p>
-                    <input onChange={(e) => setEmail(e.target.value)} required type="email" name="email" id="email" placeholder="example@mail.com" />
-                </label>
-                <label htmlFor="password">
-                    <p>Password</p>
-                    <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" placeholder="password" />
-                </label>
-                <button className = 'text-white' type="submit">Sign up</button>
-            </form>
+            <div className='w-full flex flex-col flex-grow items-center justify-center'>
+                <div className = 'flex flex-col w-1/4 ' onSubmit={handleSignUpForm}>
+                    <label className = 'font-light font-sans text-white text-2xl' htmlFor="email">
+                        Email: 
+                        <input className='w-full font-light font-sans text-2xl appearance-none bg-black mx-2 my-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 ' 
+                            onChange={(e) => setEmail(e.target.value)} required type="email" name="email" id="email" placeholder="example@mail.com"/>
+                    </label>
+
+                    <label className = 'font-light font-sans text-white text-2xl' htmlFor="password">
+                        Password: 
+                        <input className='w-full font-light font-sans text-2xl appearance-none bg-black mx-2 my-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 ' 
+                            onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" placeholder="password" />
+                    </label>
+                    <div className='my-2 flex w-full items-center justify-center'>
+                        <button className = 'text-white font-sans font-light text-2xl bg-black border border-accent-100 rounded w-1/4' type="submit">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         </>
     );
 }
