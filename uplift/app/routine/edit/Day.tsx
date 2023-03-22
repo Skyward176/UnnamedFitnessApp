@@ -5,8 +5,11 @@ import {getDoc} from 'firebase/firestore';
 import Exercise from './Exercise';
 import {updateDoc, deleteDoc, arrayUnion, arrayRemove, addDoc,collection} from 'firebase/firestore'
 import {auth} from '@/config/firebaseInit';
+import {useContext} from 'react';
+import {DocrefContext} from '@/context/DocrefContext';
 const Day = (props) => {
     const [data, setData] = useState(props.data)
+    const docRef = useContext(DocrefContext);
     useEffect(() => {
     },[])
 
@@ -17,7 +20,7 @@ const Day = (props) => {
     }
     const handleDelete= () => {// need rewrite
         if(props.dayCount>1){
-            props.deleteDay(props.data);
+            props.deleteDay(docRef, data);
         }
     }
     const newExerciseHandler = () => {// need rewrite
@@ -62,7 +65,7 @@ const Day = (props) => {
                 <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='flex flex-col w-fit my-2'>
-                {data.exercises.map((exercise)=> <Exercise exerciseCount={data.exercises.length} deleteExercise ={deleteExercise} newExerciseHandler={newExerciseHandler} key = {exercise.name} data = {exercise}/>)} 
+                {data.exercises.map((exercise)=> <Exercise exerciseCount={data.exercises.length} deleteExercise ={deleteExercise} newExerciseHandler={newExerciseHandler} key = {exercise.eid} data = {exercise}/>)} 
             </div>
         </div>
     );

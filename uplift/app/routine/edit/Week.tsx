@@ -5,9 +5,13 @@ import {getDoc, updateDoc, addDoc, collection, arrayUnion,arrayRemove, deleteDoc
 import {auth} from '@/config/firebaseInit';
 import {useContext} from 'react';
 import {RoutineContext} from '@/context/RoutineContext';
+import {DocrefContext} from '@/context/DocrefContext';
 import Day from './Day'
+import {v4 as uuid} from 'uuid';
+
 const Week = (props) => {
     const [routineData, setRoutineData] = useContext(RoutineContext);
+    const docRef = useContext(DocrefContext);
     const [data, setData] = useState(props.data);
     useEffect(() => {
     },[])
@@ -16,53 +20,49 @@ const Week = (props) => {
         const updatedData = routineData;
         updatedData.weeks[props.index].title = e.target.value;
         setRoutineData(updatedData);
-        updateDoc(props.routineRef, routineData);
+        updateDoc(docRef, routineData);
     }
     const deleteHandler = (e) => {
         if(props.weekCount>1){
-            props.deleteWeek(props.routineRef,props.data);
+            props.deleteWeek(docRef,props.data);
         }
     }
-    const newDayHandler = () => { //needs rewrite
-        const createDoc = async (routineRef) => {
-            const newDay = await addDoc(collection(routineRef, 'days'), {
-                uid:auth.currentUser.uid,
-                exercises:[],
+    const newDayHandler = () => {
+        const createDay= async (docRef) => {
+            const newDay = {
+                    title: "newDay",
+                    duid: uuid(),
+                    exercises: [{
+                            eid:uuid(),
+                            name: "",
+                            sets: 0,
+                            reps: 0
+                        }
+                    ]
+                }
+            const updatedData = routineData;
+            updatedData.weeks[props.index].days = [...updatedData.weeks[props.index].days, newDay];
+            setRoutineData({...routineData,
+                weeks:updatedData.weeks
             });
-            const newExercise = await addDoc(collection(routineRef, 'exercises'), {
-                uid:auth.currentUser.uid,
-                name:'',
-                reps:0,
-                sets:0,
-            });
-            await updateDoc(newDay, {
-                exercises: [newExercise]
-            })
-            await updateDoc(weekRef, {
-                days: arrayUnion(newDay)
-            })
-            let newDays =  [...data.days, newDay];
-            setData({...data, days: newDays
-
-            });
+            updateDoc(docRef, routineData);
         }
         console.log("Create Day Fired");
-        createDoc(props.routineRef);
+        createDay(docRef);
     }
-    const deleteDay = (ref) => {//needs rewrite
-        deleteDoc(ref);
-        updateDoc(weekRef, {
-            days: arrayRemove(ref)
-        })
-        setData({
-            title: data.title,
-            days: data.days.filter(function (day){
-                    return day!=ref
-                })
-            }
-       )
-        console.log(ref);
-        getDoc(weekRef).then((data)=>console.log(data.data().days))
+    const deleteDay = (docRef,data) => {// can't delete first day but that may not matter???
+        const removeDay = async () => {
+            let newDays = routineData.weeks[props.index].days.filter(function (day) {
+                return(day!=data);
+            });
+            const updatedData = routineData;
+            updatedData.weeks[props.index].days = newDays;
+            setRoutineData({...routineData,
+                weeks:updatedData.weeks
+            });
+            updateDoc(docRef, routineData);
+        }
+        removeDay();
     }
     return(
         <>
@@ -73,7 +73,7 @@ const Week = (props) => {
             </div>
             <div className='h-full p-4 block w-full'>
                 {
-                    //data.days.map((day) => <Day routineRef={props.routineRef} dayCount={data.days.length} deleteDay={deleteDay} newDayHandler={newDayHandler} data={day} key={day.title}/>)
+                    routineData.weeks[props.index].days.map((day, i) => <Day index ={i}  dayCount={routineData.weeks[props.index].days.length} deleteDay={deleteDay} newDayHandler={newDayHandler} data={day} key={day.duid}/>)
                 }
             </div>
         </>

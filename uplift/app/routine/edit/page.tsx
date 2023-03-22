@@ -7,6 +7,7 @@ import {firebase_app, auth} from '@/config/firebaseInit';
 import {getFirestore, collection,getDoc,deleteDoc,doc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation'
 import {RoutineContext} from '@/context/RoutineContext';
+import {DocrefContext} from '@/context/DocrefContext';
 import { v4 as uuid } from 'uuid';
 
 export default function RoutineEditor() {
@@ -147,10 +148,11 @@ export default function RoutineEditor() {
         <div className='flex flex-col flex-wrap h-full w-full overflow-hidden'>
                 <Navbar />
                 <RoutineContext.Provider value={[routineData, setRoutineData]}>
+                <DocrefContext.Provider value={ docRef }>
                     <div className='w-screen grow flex lg:flex-row flex-col text-white '>
                         <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
                             {routineData.weeks.map((week, i) => <div className='h-full p-4 block w-full'>
-                                                    <Week index={i} routineRef ={docRef} weekCount={routineData.weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.wuid}/>
+                                                    <Week index={i} weekCount={routineData.weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.wuid}/>
                                                     </div>)}
                         </div>
                         <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
@@ -159,6 +161,7 @@ export default function RoutineEditor() {
                             </div>
                         </div>
                     </div>
+                </DocrefContext.Provider>
                 </RoutineContext.Provider>
         </div>
     );
