@@ -6,9 +6,12 @@ export const RoutineContext = createContext({
     description: "",
     weeks: [{
         title: "",
+        wuid:"",
         days: [{
             title: "",
+            duid:"",
             exercises: [{
+                eid: "",
                 name: "",
                 sets: 0,
                 reps: 0

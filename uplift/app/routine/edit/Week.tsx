@@ -12,11 +12,10 @@ const Week = (props) => {
     useEffect(() => {
     },[])
 
-    const handleTitleChange= (e) =>{// needs rewrite
+    const handleTitleChange= (e) =>{
         const updatedData = routineData;
-        updatedData.weeks[props.index] = e.target.value;
+        updatedData.weeks[props.index].title = e.target.value;
         setRoutineData(updatedData);
-        console.log(routineData);
         updateDoc(props.routineRef, routineData);
     }
     const deleteHandler = (e) => {

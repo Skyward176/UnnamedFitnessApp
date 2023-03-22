@@ -7,6 +7,7 @@ import {firebase_app, auth} from '@/config/firebaseInit';
 import {getFirestore, collection,getDoc,deleteDoc,doc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation'
 import {RoutineContext} from '@/context/RoutineContext';
+import { v4 as uuid } from 'uuid';
 
 export default function RoutineEditor() {
 
@@ -17,9 +18,12 @@ export default function RoutineEditor() {
         description: "",
         weeks: [{
             title: "",
+            wuid:"",
             days: [{
                 title: "",
+                duid:"",
                 exercises: [{
+                    eid: "",
                     name: "",
                     sets: 0,
                     reps: 0
@@ -46,10 +50,12 @@ export default function RoutineEditor() {
             description: "",
             weeks: [{
                 title: 'Week 1',
+                wuid: uuid(),
                 days: [{
                     title: 'Day 1',
+                    duid: uuid(),
                     exercises: [{
-                        exerciseId: 1,
+                        eid: uuid(),
                         name: 'Bench Press',
                         sets: 0,
                         reps: 0
@@ -95,9 +101,12 @@ export default function RoutineEditor() {
         const createWeek= async (docRef) => {
             const newWeek = {
                     title:"newWeek",
+                    wuid: uuid(),
                     days: [{
                             title: "newDay",
+                            duid: uuid(),
                             exercises: [{
+                                    eid:uuid(),
                                     name: "",
                                     sets: 0,
                                     reps: 0
@@ -141,7 +150,7 @@ export default function RoutineEditor() {
                     <div className='w-screen grow flex lg:flex-row flex-col text-white '>
                         <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
                             {routineData.weeks.map((week, i) => <div className='h-full p-4 block w-full'>
-                                                    <Week index={i} routineRef ={docRef} weekCount={routineData.weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week}/>
+                                                    <Week index={i} routineRef ={docRef} weekCount={routineData.weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.wuid}/>
                                                     </div>)}
                         </div>
                         <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
