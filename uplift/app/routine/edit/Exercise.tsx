@@ -1,24 +1,32 @@
 'use client'
 import {HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark} from 'react-icons/hi2';
-import {useState } from 'react';
+import {useState, useContext} from 'react';
 import {getDoc, updateDoc} from 'firebase/firestore';
+import {RoutineContext} from '@/context/RoutineContext';
+import { DocrefContext } from '@/context/DocrefContext';
+
 const Exercise = (props) => {
     const [data, setData] = useState(props.data);
+    const docRef = useContext(DocrefContext);
+    const [routineData, setRoutineData] = useContext(RoutineContext);
 
     const handleTitleChange= (e) =>{
-        updateDoc(props.data, {
-            name: e.target.value
-        });
+        const updatedData = routineData;
+        updatedData.weeks[props.weekIndex].days[props.dayIndex].exercises[props.index].name= e.target.value;
+        setRoutineData(updatedData);
+        updateDoc(docRef, routineData);
     }
     const handleSetsChange= (e) =>{
-        updateDoc(props.data, {
-            sets: Number(e.target.value)
-        });
+        const updatedData = routineData;
+        updatedData.weeks[props.weekIndex].days[props.dayIndex].exercises[props.index].sets= e.target.value;
+        setRoutineData(updatedData);
+        updateDoc(docRef, routineData);
     }
     const handleRepsChange= (e) =>{
-        updateDoc(props.data, {
-            reps: Number(e.target.value)
-        });
+        const updatedData = routineData;
+        updatedData.weeks[props.weekIndex].days[props.dayIndex].exercises[props.index].reps= e.target.value;
+        setRoutineData(updatedData);
+        updateDoc(docRef, routineData);
     }
     const handleDelete= () => {
         if(props.exerciseCount>1){
