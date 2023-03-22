@@ -4,58 +4,59 @@ import {useState, useEffect} from 'react';
 import {getDoc} from 'firebase/firestore';
 import Exercise from './Exercise';
 import {updateDoc, deleteDoc, arrayUnion, arrayRemove, addDoc,collection} from 'firebase/firestore'
-import {auth} from '@/config/firebaseInit';
 import {useContext} from 'react';
 import {DocrefContext} from '@/context/DocrefContext';
+import {RoutineContext} from '@/context/RoutineContext';
+import {v4 as uuid} from 'uuid';
 const Day = (props) => {
     const [data, setData] = useState(props.data)
     const docRef = useContext(DocrefContext);
+    const [routineData, setRoutineData] = useContext(RoutineContext);
     useEffect(() => {
     },[])
 
     const handleTitleChange= (e) =>{
-        updateDoc(props.data, {
-            title: e.target.value
-        });
+        const updatedData = routineData;
+        updatedData.weeks[props.weekIndex].days[props.index].title = e.target.value;
+        setRoutineData(updatedData);
+        updateDoc(docRef, routineData);
     }
-    const handleDelete= () => {// need rewrite
+    const handleDelete= () => {
         if(props.dayCount>1){
             props.deleteDay(docRef, data);
         }
     }
-    const newExerciseHandler = () => {// need rewrite
-        const createDoc = async (routineRef) => {
-            const newExercise = await addDoc(collection(routineRef, 'exercises'), {
-                uid:auth.currentUser.uid,
-                name:'',
-                reps:0,
-                sets:0,
+    const newExerciseHandler = () => {
+        const createExercise= async (docRef) => {
+            const newExercise = {
+                    eid:uuid(),
+                    name: "",
+                    sets: 0,
+                    reps: 0
+            }
+            const updatedData = routineData;
+            updatedData.weeks[props.weekIndex].days[props.index].exercises = [...updatedData.weeks[props.weekIndex].days[props.index].exercises, newExercise];
+            setRoutineData({...routineData,
+                weeks:updatedData.weeks
             });
-            await updateDoc(dayRef, {
-                exercises: arrayUnion(newExercise)
-            })
-            let newExercises =  [...data.exercises, newExercise];
-            setData({...data, exercises: newExercises
-
-            });
+            updateDoc(docRef, routineData);
         }
         console.log("Create Exercise Fired");
-        createDoc(props.routineRef);
+        createExercise(docRef);
     }
-    const deleteExercise= (ref) => {//need rewrite
-        deleteDoc(ref);
-        updateDoc(dayRef, {
-            exercises: arrayRemove(ref)
-        })
-        setData({
-            title: data.title,
-            exercises: data.exercises.filter(function (exercise){
-                    return exercise!=ref
-                })
-            }
-       )
-        console.log(ref);
-        getDoc(dayRef).then((data)=>console.log(data.data().exercises))
+    const deleteExercise= (data) => {
+        const removeExercise = async () => {
+            let newExercises = routineData.weeks[props.weekIndex].days[props.index].exercises.filter(function (exercise) {
+                return(exercise!=data);
+            });
+            const updatedData = routineData;
+            updatedData.weeks[props.weekIndex].days[props.index].exercises = newExercises;
+            setRoutineData({...routineData,
+                weeks:updatedData.weeks
+            });
+            updateDoc(docRef, routineData);
+        }
+        removeExercise();
     }
     return(
         <div className='px-7'>

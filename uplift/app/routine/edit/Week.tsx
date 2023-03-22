@@ -12,7 +12,6 @@ import {v4 as uuid} from 'uuid';
 const Week = (props) => {
     const [routineData, setRoutineData] = useContext(RoutineContext);
     const docRef = useContext(DocrefContext);
-    const [data, setData] = useState(props.data);
     useEffect(() => {
     },[])
 
@@ -50,7 +49,7 @@ const Week = (props) => {
         console.log("Create Day Fired");
         createDay(docRef);
     }
-    const deleteDay = (docRef,data) => {// can't delete first day but that may not matter???
+    const deleteDay = (docRef,data) => {
         const removeDay = async () => {
             let newDays = routineData.weeks[props.index].days.filter(function (day) {
                 return(day!=data);
@@ -73,7 +72,7 @@ const Week = (props) => {
             </div>
             <div className='h-full p-4 block w-full'>
                 {
-                    routineData.weeks[props.index].days.map((day, i) => <Day index ={i}  dayCount={routineData.weeks[props.index].days.length} deleteDay={deleteDay} newDayHandler={newDayHandler} data={day} key={day.duid}/>)
+                    routineData.weeks[props.index].days.map((day, i) => <Day weekIndex = {props.index} index ={i}  dayCount={props.data.days.length} deleteDay={deleteDay} newDayHandler={newDayHandler} data={day} key={day.duid}/>)
                 }
             </div>
         </>
