@@ -80,7 +80,7 @@ export default function RoutineEditor() {
     // on page load, check params to determine creation of new routine, else grab routine reference passed through params
     // use
     useEffect(() => {
-        if(searchParams.get('newRoutine')) {
+        if(searchParams.get('newRoutine')== 'true') {
             createRoutine(db).catch(console.error);
             router.push('routine/edit', undefined,{shallow: true})
         }else {
