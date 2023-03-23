@@ -34,8 +34,8 @@ export default function Routines (){
         <div className='overflow-hidden h-full'>
             <Navbar/>
             <div className='w-full flex justify-center items-center h-full'>
-                <div className = 'flex flex-col h-full md:h-3/4 overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-track-black scrollbar-thumb-slate-900'>
-                    <div className='border-b border-white h-20 p-4 w-72 md:w-96'>
+                <div className = 'flex flex-col h-full md:w-96 lg:w-1/2 md:h-3/4 overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-track-black scrollbar-thumb-slate-900'>
+                    <div className='border-b border-white h-20 p-4 w-72 md:w-96 lg:w-full'>
                         <Link href={{pathname: 'routine/edit', query: {newRoutine: true}}}> 
                             <div className='h-full w-full flex items-center justify-between'>
                                 <p className='text-white font-sans text-2xl font-light hover:text-accent-100'>Create a routine</p>
@@ -43,7 +43,7 @@ export default function Routines (){
                             </div>
                         </Link>
                     </div>
-                    {routines.map((doc)=> <div key={doc.id} className='border-b border-white h-20 p-4 w-72 md:w-96 flex items-center justify-between'>
+                    {routines.map((doc)=> <div key={doc.id} className='border-b border-white h-20 p-4 w-72 md:w-96 lg:w-full flex items-center justify-between'>
                                     <Link href={{pathname:'routine/view',query:{routineID:doc.id}}} className='text-white text-2xl font-sans font-light'>{doc.data().title}</Link>
                                     <div id='buttonSection' className='flex'>
                                         <Link href={{pathname:'routine/edit',query:{newRoutine:false, routineID:doc.id}}} className='text-white text-2xl font-sans font-light'><AiFillEdit color='white' size = '1.75rem' /></Link>
