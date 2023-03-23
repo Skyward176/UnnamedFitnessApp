@@ -4,7 +4,7 @@ import Week from './Week';
 import DescriptionForm from './DescriptionForm';
 import {useState, useEffect} from 'react';
 import {firebase_app, auth} from '@/config/firebaseInit';
-import {getFirestore, collection,getDoc,deleteDoc,doc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
+import {getFirestore, collection,getDoc,doc, addDoc, arrayUnion, arrayRemove, updateDoc} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation'
 import {RoutineContext} from '@/context/RoutineContext';
 import {DocrefContext} from '@/context/DocrefContext';
@@ -47,7 +47,7 @@ export default function RoutineEditor() {
     const createRoutine = async (db) => {
         const newRoutine = await addDoc(collection(db, 'routines'), {
             uid: auth.currentUser.uid,
-            title: "",
+            title: "New Routine",
             description: "",
             weeks: [{
                 title: 'Week 1',
@@ -83,6 +83,16 @@ export default function RoutineEditor() {
         if(searchParams.get('newRoutine')) {
             createRoutine(db).catch(console.error);
             router.push('routine/edit', undefined,{shallow: true})
+        }else {
+            if(searchParams.get('routineID') != null) {
+                const docId = doc(db, 'routines', searchParams.get('routineID'));
+                const hydrateData = async (docId) => {
+                    const data = await getDoc(docId);
+                    setRoutineData(data.data());
+                }
+                hydrateData(docId);
+                router.push('routine/edit', undefined,{shallow: true})
+            }
         }
     }, []);
 

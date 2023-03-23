@@ -30,7 +30,7 @@ export default function Navbar () {
             });
         }
     }
-    const menuItems=[{'name':'Profile', 'href':'user/profile'}];
+    const menuItems=[{'name':'Profile', 'href':'user'}];
     return (
         <>
             <div className='w-full h-16 bg-black border-b-white border-b flex flex-row'>
