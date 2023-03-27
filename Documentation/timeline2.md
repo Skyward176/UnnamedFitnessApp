@@ -14,6 +14,8 @@
 8. Write/ perform tests (2 days)
 9. Create admin user rules(1 day)
 10. Create admin dashboard(1 day)
+11. Add Reorder functions (week/day/exercise)(1 day)
+12. Add Duplication functions(week/day/exericse)(1 day)
 
 ---
 
