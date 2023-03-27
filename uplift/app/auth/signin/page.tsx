@@ -39,6 +39,7 @@ export default function Signin() {
         <div className='h-full flex flex-col'>
             <Navbar />
             <div className='w-full flex flex-col flex-grow items-center justify-center'>
+                <h1 className='text-white text-4xl font-light font-sans my-4'>Sign In </h1>
                 <form className = 'flex flex-col w-1/4 ' onSubmit={handleSignInForm}>
                     <label className = 'font-light font-sans text-white text-2xl' htmlFor="email">
                         Email: 

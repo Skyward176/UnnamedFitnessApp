@@ -89,6 +89,7 @@ export default function RoutineEditor() {
                 const hydrateData = async (docId) => {
                     const data = await getDoc(docId);
                     setRoutineData(data.data());
+                    setDocRef(docId)
                 }
                 hydrateData(docId);
                 router.push('routine/edit', undefined,{shallow: true})
