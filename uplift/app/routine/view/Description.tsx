@@ -5,7 +5,7 @@ import IconButton from '@/components/IconButton';
 
 const Description = (props) => {
     return(
-        <div className='flex flex-col h-full'>
+        <div className='h-1/2 flex flex-col'>
             <div className='flex items-center'>
                 <p className='text-2xl font-light font-sans'>Title: {props.title} </p>
             </div>

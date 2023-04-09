@@ -7,7 +7,8 @@ import {firebase_app, auth} from '@/config/firebaseInit';
 import {getFirestore, getDoc, doc} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {RoutineContext} from '@/context/RoutineContext';
-
+import ReviewForm from '@/components/ReviewForm';
+import ReviewList from '@/components/ReviewList'
 export default function RoutineView() {
 
     // state variables
@@ -47,6 +48,7 @@ export default function RoutineView() {
     useEffect(() => {
         let docId = searchParams.get('routineID');
         docId = doc(db, 'routines', docId);
+        setDocRef(docId);
         const hydrateData = async (docId) => {
             const data = await getDoc(docId);
             setRoutineData(data.data());
@@ -67,6 +69,8 @@ export default function RoutineView() {
                     <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
                         <div className='h-full p-4 block w-full'>
                             <Description title={routineData.title} description={routineData.description}/>
+                            <ReviewForm routineId={docRef}/>
+                            <ReviewList routineId={docRef}/>
                         </div>
                     </div>
                 </div>
