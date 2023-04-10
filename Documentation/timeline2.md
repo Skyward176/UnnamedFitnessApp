@@ -4,13 +4,13 @@
 
 ## MVP Reqs
 
-1. Add registration password validation, user data collection (1 day)
-2. Add search frontend. (1 day)
-3. Implement Search functionality (1 day)
+1. ~~Add registration password validation, user data collection (1 day)~~
+2. ~~Add search frontend. (1 day)~~
+3. ~~Implement Search functionality (1 day)~~
+6. ~~Add Review frontend (1 day)~~
+7. ~~Add Review CRUD functions (2 days)~~
 4. Homepage Development (logged in) (2 days)
 5. Homepage Development (logged out) (1 day)
-6. Add Review frontend (1 day)
-7. Add Review CRUD functions (2 days)
 8. Write/ perform tests (2 days)
 9. Create admin user rules(1 day)
 10. Create admin dashboard(1 day)
