@@ -11,7 +11,7 @@
     - [ ] Add/remove tags
 - [ ] Delete Routine
     - [ ] Only og user or admin can delete 
-- Edit Routine
+- [ ] Edit Routine
     - [ ] Only og user can Edit
 
 ### Search
