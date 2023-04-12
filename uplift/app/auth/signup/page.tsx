@@ -23,7 +23,8 @@ async function signUpHandler(email:string, password:string, gender:string, weigh
                 email: email,
                 gender: gender,
                 weight: weight,
-                name: name
+                name: name,
+                pinnedRoutines: []
             }
             let db = getFirestore(firebase_app);
             let docRef = doc(db, 'users', auth.currentUser.uid);

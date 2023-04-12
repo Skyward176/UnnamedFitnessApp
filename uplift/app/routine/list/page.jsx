@@ -2,11 +2,12 @@
 import Navbar from '@/components/Navbar'
 import { collection, query, where, getDocs, getFirestore} from "firebase/firestore";
 import {firebase_app, auth} from '@/config/firebaseInit'
-import { useEffect, useState} from 'react';
-import {AiFillEdit} from 'react-icons/Ai';
+import { useEffect, useState, useContext} from 'react';
+import {AiFillEdit, AiFillPushpin } from 'react-icons/Ai';
 import {HiXMark, HiPlus} from 'react-icons/hi2';
 import Link from 'next/link';
-import {deleteDoc,doc} from 'firebase/firestore'
+import {deleteDoc,doc, setDoc} from 'firebase/firestore';
+import {AuthContext} from '@/context/AuthContext';
 export default function Routines (){
     const [routines, setRoutines] = useState([]);
     useEffect(() => {
@@ -30,6 +31,15 @@ export default function Routines (){
         fetchData();
 
     }
+
+    const [profile, setProfile] = useContext(AuthContext);
+    const pinHandler = (routineID) => {
+        const db = getFirestore(firebase_app);
+        let newData = profile;
+        newData.pinnedRoutines.push(routineID);
+        setProfile(newData);
+        setDoc(doc(db, 'users', auth.currentUser.uid), newData);
+    }
     return(
         <div className='overflow-hidden h-full'>
             <Navbar/>
@@ -47,6 +57,7 @@ export default function Routines (){
                                     <Link href={{pathname:'routine/view',query:{routineID:doc.id}}} className='text-white text-2xl font-sans font-light'>{doc.data().title}</Link>
                                     <div id='buttonSection' className='flex'>
                                         <Link href={{pathname:'routine/edit',query:{newRoutine:false, routineID:doc.id}}} className='text-white text-2xl font-sans font-light'><AiFillEdit color='white' size = '1.75rem' /></Link>
+                                        <button onClick={() => pinHandler(doc.id)}><AiFillPushpin color='white' size='1.75rem'/></button>
                                         <button onClick={() => deleteHandler(doc.id)}><HiXMark color='red' size='1.75rem'/></button>
                                     </div>
                                 </div>)}
