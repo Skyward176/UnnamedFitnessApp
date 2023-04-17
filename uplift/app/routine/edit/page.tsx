@@ -109,6 +109,26 @@ export default function RoutineEditor() {
     const changeDescription = (e) => {
         routineData.description=e.target.value; 
     }
+    const duplicateWeekHandler = (index) => {
+        const dupeWeek= async (docRef) => {
+            const oldWeek = routineData.weeks[index];
+            const newWeek = {
+                days:oldWeek.days,
+                title:oldWeek.title,
+                wuid:uuid()
+            }
+            let newWeeks = [...routineData.weeks, newWeek]
+            await updateDoc(docRef, {
+                weeks: newWeeks
+            })
+            setRoutineData({
+                ...routineData,
+                weeks:newWeeks
+            });
+        }
+        console.log("Duplicate Week Fired");
+        dupeWeek(docRef);
+    }
     const newWeekHandler = () => {
         const createWeek= async (docRef) => {
             const newWeek = {
@@ -162,8 +182,15 @@ export default function RoutineEditor() {
                 <DocrefContext.Provider value={ docRef }>
                     <div className='w-screen grow flex lg:flex-row flex-col text-white '>
                         <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
-                            {routineData.weeks.map((week, i) => <div className='h-full p-4 block w-full'>
-                                                    <Week index={i} weekCount={routineData.weeks.length} deleteWeek={deleteWeek} newWeekHandler={newWeekHandler} data={week} key={week.wuid}/>
+                            {routineData.weeks.map((week, i) => <div key={week.wuid} className='h-full p-4 block w-full'>
+                                                    <Week index={i}
+                                                     weekCount={routineData.weeks.length} 
+                                                     deleteWeek={deleteWeek} 
+                                                     newWeekHandler={newWeekHandler} 
+                                                     data={week} 
+                                                     key={week.wuid}
+                                                     duplicateWeekHandler={duplicateWeekHandler}
+                                                     />
                                                     </div>)}
                         </div>
                         <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>

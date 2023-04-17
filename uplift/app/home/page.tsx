@@ -24,7 +24,11 @@ export default function Home() {
         } else{
             profile.pinnedRoutines.forEach(async(routine) => {
                 let data = await getDoc(doc(db, 'routines', routine));
-                routineArr.push(data);
+                if(data!=null){
+                    routineArr.push(data);
+                } else{
+                    //logic to remove delted routine from pins here 
+                }
                 setFetchedRoutines([...routineArr]);
             })
 

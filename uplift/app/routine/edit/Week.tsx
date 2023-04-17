@@ -68,6 +68,7 @@ const Week = (props) => {
             <div className='flex items-center'>
                 <button onClick={deleteHandler}><HiXMark color='red' size='1.75rem'/></button>
                 <button onClick={props.newWeekHandler}><HiPlus size='1.75rem'/></button>
+                <button onClick={(e) => props.duplicateWeekHandler(props.index)}><HiOutlineDocumentDuplicate size='1.75rem'/></button>
                 <input onBlur={handleTitleChange} placeholder={props.data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='h-full p-4 block w-full'>
