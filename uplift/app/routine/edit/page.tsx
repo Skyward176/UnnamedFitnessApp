@@ -188,6 +188,46 @@ export default function RoutineEditor() {
         removeWeek();
         getDoc(docRef).then((data) => {setRoutineData(data.data()); console.log(data.data())})
     }
+
+    const handleMoveWeekUp = (index) => {
+        const moveUp = async(docRef) => {
+            const temp = routineData.weeks[index-1];
+            let newWeeks = routineData.weeks;
+            newWeeks[index-1]=newWeeks[index];
+            newWeeks[index] = temp;
+            setRoutineData({
+                ...routineData,
+                weeks:newWeeks
+            });
+            await updateDoc(docRef, {
+                weeks: newWeeks
+            })
+        }
+        console.log('Tried moveup')
+        if(index>0){
+            moveUp(docRef);
+        }
+    }
+    const handleMoveWeekDown = (index) => {
+        const moveDown = async(docRef) => {
+            const temp = routineData.weeks[index+1];
+            let newWeeks = routineData.weeks;
+            newWeeks[index+1]=newWeeks[index];
+            newWeeks[index] = temp;
+            setRoutineData({
+                ...routineData,
+                weeks:newWeeks
+            });
+            await updateDoc(docRef, {
+                weeks: newWeeks
+            })
+        }
+        console.log('Tried movedown')
+        if(index+1<routineData.weeks.length){
+            moveDown(docRef);
+        }
+
+    }
     return(
         <div className='flex flex-col flex-wrap h-full w-full overflow-hidden'>
                 <Navbar />
@@ -203,6 +243,8 @@ export default function RoutineEditor() {
                                                      data={week} 
                                                      key={week.wuid}
                                                      duplicateWeekHandler={duplicateWeekHandler}
+                                                     handleMoveWeekUp={handleMoveWeekUp}
+                                                     handleMoveWeekDown={handleMoveWeekDown}
                                                      />
                                                     </div>)}
                         </div>

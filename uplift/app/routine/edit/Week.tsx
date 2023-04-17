@@ -1,5 +1,5 @@
 'use client'
-import {HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark} from 'react-icons/hi2';
+import {HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark, HiChevronUp, HiChevronDown} from 'react-icons/hi2';
 import {useEffect, useState} from 'react';
 import {getDoc, updateDoc, addDoc, collection, arrayUnion,arrayRemove, deleteDoc} from 'firebase/firestore';
 import {auth} from '@/config/firebaseInit';
@@ -93,6 +93,10 @@ const Week = (props) => {
     return(
         <>
             <div className='flex items-center'>
+                <div className='flex flex-col w-7 h-7'>
+                    <button onClick={(e)=>props.handleMoveWeekUp(props.index)}><HiChevronUp size='1rem'/></button>
+                    <button onClick={(e)=>props.handleMoveWeekDown(props.index)}><HiChevronDown /></button>
+                </div>
                 <button onClick={deleteHandler}><HiXMark color='red' size='1.75rem'/></button>
                 <button onClick={props.newWeekHandler}><HiPlus size='1.75rem'/></button>
                 <button onClick={(e) => props.duplicateWeekHandler(props.index)}><HiOutlineDocumentDuplicate size='1.75rem'/></button>
