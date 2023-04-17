@@ -76,6 +76,45 @@ const Week = (props) => {
         }
         dupeDay(docRef);
     }
+    const handleMoveDayUp = (index) => {
+        const moveUp = async(docRef) => {
+            const temp = routineData.weeks[props.index].days[index-1];
+            let newWeeks = routineData.weeks;
+            newWeeks[props.index].days[index-1]=newWeeks[props.index].days[index];
+            newWeeks[props.index].days[index] = temp;
+            setRoutineData({
+                ...routineData,
+                weeks:newWeeks
+            });
+            await updateDoc(docRef, {
+                weeks: newWeeks
+            })
+        }
+        console.log('Tried moveup day')
+        if(index>0){
+            moveUp(docRef);
+        }
+    }
+    const handleMoveDayDown = (index) => {
+        const moveDown = async(docRef) => {
+            const temp = routineData.weeks[props.index].days[index+1];
+            let newWeeks = routineData.weeks;
+            newWeeks[props.index].days[index+1]=newWeeks[props.index].days[index];
+            newWeeks[props.index].days[index] = temp;
+            setRoutineData({
+                ...routineData,
+                weeks:newWeeks
+            });
+            await updateDoc(docRef, {
+                weeks: newWeeks
+            })
+        }
+        console.log('Tried movedown day')
+        if(index+1<routineData.weeks[props.index].days.length){
+            moveDown(docRef);
+        }
+
+    }
     const deleteDay = (docRef,data) => {
         const removeDay = async () => {
             let newDays = routineData.weeks[props.index].days.filter(function (day) {
@@ -110,6 +149,8 @@ const Week = (props) => {
                                                                         deleteDay={deleteDay} 
                                                                         newDayHandler={newDayHandler} 
                                                                         duplicateDayHandler={duplicateDayHandler}
+                                                                        handleMoveDayUp={handleMoveDayUp}
+                                                                        handleMoveDayDown={handleMoveDayDown}
                                                                         data={day} 
                                                                         key={day.duid}/>)
                 }

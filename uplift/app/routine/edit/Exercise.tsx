@@ -1,5 +1,5 @@
 'use client'
-import {HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark} from 'react-icons/hi2';
+import {HiChevronUp, HiChevronDown, HiBars3, HiPlus, HiOutlineDocumentDuplicate, HiXMark} from 'react-icons/hi2';
 import {useState, useContext} from 'react';
 import {getDoc, updateDoc} from 'firebase/firestore';
 import {RoutineContext} from '@/context/RoutineContext';
@@ -36,6 +36,10 @@ const Exercise = (props) => {
     return(
         <>
             <div className=' px-7 flex items-center'>
+                <div className='flex flex-col w-7 h-7'>
+                    <button onClick={(e)=>props.handleMoveExerciseUp(props.index)}><HiChevronUp size='1rem'/></button>
+                    <button onClick={(e)=>props.handleMoveExerciseDown(props.index)}><HiChevronDown /></button>
+                </div>
                 <button onClick={handleDelete}><HiXMark color='red' size='1.75rem'/></button>
                 <button onClick={props.newExerciseHandler}><HiPlus size='1.75rem'/></button>
                 <div className='flex'>
