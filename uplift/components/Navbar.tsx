@@ -11,11 +11,13 @@ import { Combobox } from '@headlessui/react';
 import {searchClient} from '@/config/meili';
 import { Router } from 'next/router';
 import { SearchContext } from '@/context/SearchContext';
+import { AuthContext } from '@/context/AuthContext';
 
 export default function Navbar () {
     const [display, setDisplay] = useState('none');
     const [searchDisplay, setSearchDisplay] = useState('none');
     const [searchResults, setSearchResults, searchQuery, setSearchQuery] = useContext(SearchContext);
+    const [profile, setProfile] = useContext(AuthContext);
     const router = useRouter()
     const menuButtonHandler = (e:any) =>{
         if ( display == 'none' ) {
@@ -71,7 +73,8 @@ export default function Navbar () {
                         </p>
                     </Link>
                 </div>
-                <div className='my-auto md:w-96 flex flex-col'>
+                {/* Search box */}
+                <div style={{display: profile ? 'flex' : 'none'}} className='my-auto md:w-96 flex-col'>
                     <div className='flex flex-row'>
                         <label>
                             <HiOutlineMagnifyingGlass className='mx-2' size='2rem' color='white'/>
@@ -92,6 +95,7 @@ export default function Navbar () {
 
                     </div>
                 </div>
+                {/*end search box */}
                 <div className='my-auto w-24 flex flex-row-reverse'>
                     <IconButton className='' onClick={menuButtonHandler}>
                         <Bars3Icon className='h-12 mx-4'/>
