@@ -54,17 +54,10 @@ const Week = (props) => {
 
             const oldDay = routineData.weeks[props.index].days[index];
             const newDay = {
+                exercises:oldDay.exercises,
                 title:oldDay.title,
-                duid:uuid(),
-                exercises: []
+                duid:uuid()
             }
-            oldDay.exercises.forEach((exercise,i) => {
-                newDay.exercises.push({
-                    ...oldDay.exercises[i],
-                    eid:uuid()
-                });
-            });
-            console.log(newDay);
             let newDays = [...routineData.weeks[props.index].days, newDay];
             const updatedData = routineData;
             updatedData.weeks[props.index].days = newDays;

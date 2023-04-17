@@ -113,14 +113,27 @@ export default function RoutineEditor() {
         const dupeWeek= async (docRef) => {
             const oldWeek = routineData.weeks[index];
             const newWeek = {
-                days:oldWeek.days,
+                days:[],
                 title:oldWeek.title,
                 wuid:uuid()
             }
+            oldWeek.days.forEach((day,i) => {
+                newWeek.days.push({
+                    title:day.title,
+                    duid:uuid(),
+                    exercises: []
+                });
+                day.exercises.forEach((exercise,k) => {
+                    newWeek.days[i].exercises.push({
+                        ...day.exercises[k],
+                        eid:uuid()
+                    });
+                });
+            });
             let newWeeks = [...routineData.weeks, newWeek]
             await updateDoc(docRef, {
                 weeks: newWeeks
-            })
+            }) 
             setRoutineData({
                 ...routineData,
                 weeks:newWeeks
