@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import {HiPlus} from 'react-icons/Hi2';
+import {HiPlus, HioutlinelistBullet, HiOutlineListBullet} from 'react-icons/Hi2';
 import {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '@/context/AuthContext';
 import {getDoc, getFirestore, doc} from 'firebase/firestore';
@@ -45,15 +45,23 @@ export default function Home() {
                 <div className='flex flex-col w-full justify-center items-center'>
 
                     {fetchedRoutines.map((routine) => <div key={routine.id} className='border-b border-white h-20 p-4 w-72 md:w-96 lg:w-1/2 flex items-center justify-between'>
-                                    <Link href={{pathname:'routine/view',query:{routineID:routine.id}}} className='text-white text-2xl font-sans font-light'>{routine.data().title}</Link>
+                                         <Link href={{pathname:'routine/view',query:{routineID:routine.id}}} className='text-white text-lg md:text-2xl font-sans font-light'>{routine.data().title}</Link>
                     </div>)}
 
                 </div>
                 <div className='h-36 flex'>
                     <Link href={{pathname: 'routine/edit', query: {newRoutine: true}}}> 
                         <div className='h-full w-full flex items-center justify-between'>
-                            <p className='text-white font-sans text-xl md:text-2xl font-light hover:text-accent-100'>Create a routine</p>
-                            <HiPlus color='white' size='1.75rem'/>
+                            <p className='text-white font-sans text-xl md:text-2xl font-light hover:text-accent-100 mr-2 '>Create a routine</p>
+                            <HiPlus color='white' size='2rem'/>
+                        </div>
+                    </Link>
+                </div>
+                <div className='h-36 flex'>
+                    <Link href='routine/list'> 
+                        <div className='h-full w-full flex items-center justify-between'>
+                            <p className='text-white font-sans text-xl md:text-2xl font-light hover:text-accent-100 mr-2'>View My Routines</p>
+                            <HiOutlineListBullet color='white' size='2rem'/>
                         </div>
                     </Link>
                 </div>
