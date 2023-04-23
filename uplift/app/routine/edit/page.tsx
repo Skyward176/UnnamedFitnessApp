@@ -31,6 +31,7 @@ export default function RoutineEditor() {
                 }],
             }],
         }],
+        tags: []
     });
     const [docRef, setDocRef] = useState();
 
@@ -63,6 +64,7 @@ export default function RoutineEditor() {
                     }],
                 }],
             }],
+            tags:[]
         });
         console.log("Created new routine");
         //save docref to state
@@ -73,7 +75,8 @@ export default function RoutineEditor() {
             uid: currentData.uid,
             title: currentData.title,
             description: currentData.description,
-            weeks: currentData.weeks
+            weeks: currentData.weeks,
+            tags: currentData.tags
         });
     }
 
@@ -97,17 +100,14 @@ export default function RoutineEditor() {
         }
     }, []);
 
-    const saveDetails = (e) => {
-        console.log("Save attempted for docref" + docRef);
-        updateDoc(docRef, routineData);
-    }
     
     const changeTitle = (e) => {
-        console.log(e.target.value);
         routineData.title=e.target.value; 
+        updateDoc(docRef, routineData);
     }
     const changeDescription = (e) => {
         routineData.description=e.target.value; 
+        updateDoc(docRef, routineData);
     }
     const duplicateWeekHandler = (index) => {
         const dupeWeek= async (docRef) => {
@@ -250,7 +250,7 @@ export default function RoutineEditor() {
                         </div>
                         <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
                             <div className='h-full p-4 block w-full'>
-                                <DescriptionForm saveFunction={saveDetails} title={routineData.title} changeTitle={changeTitle} changeDescription={changeDescription} description={routineData.description}/>
+                                <DescriptionForm title={routineData.title} changeTitle={changeTitle} changeDescription={changeDescription} description={routineData.description}/>
                             </div>
                         </div>
                     </div>

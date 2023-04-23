@@ -7,9 +7,7 @@ import {useState, useContext} from 'react';
 import {auth} from '@/config/firebaseInit';
 import {useRouter} from 'next/navigation';
 import {signOut} from 'firebase/auth';
-import { Combobox } from '@headlessui/react';
 import {searchClient} from '@/config/meili';
-import { Router } from 'next/router';
 import { SearchContext } from '@/context/SearchContext';
 import { AuthContext } from '@/context/AuthContext';
 
