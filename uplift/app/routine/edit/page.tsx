@@ -250,7 +250,7 @@ export default function RoutineEditor() {
                         </div>
                         <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
                             <div className='h-full p-4 block w-full'>
-                                <DescriptionForm title={routineData.title} changeTitle={changeTitle} changeDescription={changeDescription} description={routineData.description}/>
+                                <DescriptionForm tags = {routineData.tags} title={routineData.title} changeTitle={changeTitle} changeDescription={changeDescription} description={routineData.description}/>
                             </div>
                         </div>
                     </div>

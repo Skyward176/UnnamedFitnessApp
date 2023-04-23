@@ -100,9 +100,9 @@ const DescriptionForm = (props) => {
                         }
 
                     </div>
-                    <div className='flex flex-col justify-center w-48 text-gray-400 mt-4'>
+                    <div className='flex justify-center text-gray-400 mt-4'>
                         {
-                            routineData.tags.map((tag) => <div key={tag} className='w-full flex items-center text-xl h-12'>
+                            routineData.tags.map((tag) => <div key={tag} className='flex items-center text-xl bg-gray-900 rounded-lg h-8 mx-1 p-1'>
                                 <button onClick={(e)=> deleteTag(tag)}><HiXMark size="1.5rem" color="red"/></button>
                                 {tag}
                             </div>)

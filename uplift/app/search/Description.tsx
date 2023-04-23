@@ -12,8 +12,8 @@ const Description = (props) => {
             <div className='flex flex-col h-1/2'>
                 <p className='text-2xl font-light font-sans'>Description: {props.description} </p>
             </div>
-            <div className='flex items-center'>
-                <label className='text-white'>Tags: </label>
+            <div className='flex text-xl items-center'>
+                <div className='flex text-white'>Tags: {props.tags.map((tag)=> <div className = 'bg-gray-900 p-1 rounded-lg  mx-1'> {tag} </div>)}</div>
             </div>
         </div>
     );
