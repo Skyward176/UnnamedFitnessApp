@@ -4,7 +4,9 @@
 Working out is intimidating and mysterious to many beginners. Resources for fitness are often fragmented hidden behind paywalls or confusing. It can be hard to tell who is offering a good weightlifting plan and who is out to take your money. It can be hard to tell if you’re progressing with your fitness goals, which adds another obstacle to maintaining this important habit.
 
 ### My Solution
-A website that allows users to create, share, and review routines. Users will also be able to track when they exercised, what routine they performed, how many reps and at what weight they performed them. This way, users can find reputable routines and track their progress in a streamlined, easy to understand way. Routines will be grouped by reccomended experience level, and reviews will show how long a user has been weight training to provide context.
+upLift, a website that allows user to create, share, view and review routines. 
+This website allows users to find routines that match their needs, or to record routines that they create or find in a place that is always synchronized and easy to access anywhere.
+In the future, upLift has the potential to grow into workout tracking and has room for many clever features such as integrated calculators for progressive overload, deloading, and one rep maximums.
 
 ### Project Objectives (Essential)
 - Login and Account System
@@ -30,8 +32,8 @@ Objectives that could be cut in the case of time constraints
 ### The Tech Stack
 - Auth- Firebase Auth
 - Database – Firestore
-- Algolia – Full Text Search
-- Frontend – nuxt.js (Vue.js)
+- MeiliSearch – Full Text Search
+- Frontend – next.js 13
 - CSS Classes – Tailwind CSS
 - *Possible* Containerization – Docker 
 - Development Environment: neovim, you nerds!
