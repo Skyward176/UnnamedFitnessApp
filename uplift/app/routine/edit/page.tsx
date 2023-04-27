@@ -233,8 +233,8 @@ export default function RoutineEditor() {
                 <Navbar />
                 <RoutineContext.Provider value={[routineData, setRoutineData]}>
                 <DocrefContext.Provider value={ docRef }>
-                    <div className='w-screen grow flex lg:flex-row flex-col text-white '>
-                        <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
+                    <div className='w-screen grow flex lg:flex-row flex-col text-white'>
+                        <div className='flex flex-col overflow-scroll justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
                             {routineData.weeks.map((week, i) => <div key={week.wuid} className='h-full p-4 block w-full'>
                                                     <Week index={i}
                                                      weekCount={routineData.weeks.length} 

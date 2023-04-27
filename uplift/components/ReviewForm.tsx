@@ -1,33 +1,30 @@
 'use client'
 import Navbar from '@/components/Navbar';
 import {auth, firebase_app} from '@/config/firebaseInit';
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import {getFirestore, addDoc, collection, getDoc, doc} from 'firebase/firestore';
+import {AuthContext} from '@/context/AuthContext';
 function ReviewForm ({routineId}) {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState(0);
     const db = getFirestore(firebase_app);
-    const getUserName = async (uid) => {
-        let profile = await getDoc(doc(collection(db,'users'),auth.currentUser.uid)) 
-        return profile.data().name;
-    }
+    const [profile, setProfile] = useContext(AuthContext);
     const handleReviewForm = (e) => {
         e.preventDefault();
         const createReview = async () => {
-            const userName = await getUserName();
             const newReview = await addDoc(collection(db, 'reviews'), {
                 uid: auth.currentUser.uid,
                 routineID: routineId,
                 rating: rating,
                 comment: comment,
-                userName: userName
+                userName: profile.name
             });
         }
         createReview();
     }
     return(
         <>
-            <div className='w-full flex flex-col flex-grow items-center justify-center'>
+            <div className='w-full flex flex-col grow items-center justify-center'>
                 <h1 className='text-white text-4xl font-light font-sans my-4'>Write a Review </h1>
                 <form className = 'flex flex-col w-72 md:w-96 ' onSubmit={(e)=>handleReviewForm(e)}>
                     <div className='flex w-full items-center'>

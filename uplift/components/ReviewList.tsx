@@ -22,6 +22,7 @@ function ReviewList({routineId}) {
     useEffect( () => {
         fetchData().catch((error)=>{
             console.log('Failed fetching data')
+            console.log(error)
         })
     }, [routineId]);
     return(

@@ -47,7 +47,7 @@ export default function RoutineView() {
     // on page load, check params to determine creation of new routine, else grab routine reference passed through params
     // use
     useEffect(() => {
-        let docId = searchParams.get('routineID');
+        var docId = searchParams.get('routineID');
         docId = doc(db, 'routines', docId);
         setDocRef(docId);
         const hydrateData = async (docId) => {
@@ -55,23 +55,25 @@ export default function RoutineView() {
             setRoutineData(data.data());
         }
         hydrateData(docId);
-    }, []);
+    }, [searchParams]);
 
     return(
-        <div className='flex flex-col flex-wrap h-full w-full overflow-hidden'>
+        <div className='flex flex-col h-full w-full md:overflow-hidden'>
             <Navbar />
             <RoutineContext.Provider value={[routineData,setRoutineData]}>
                 <div className='w-screen grow flex lg:flex-row flex-col text-white '>
-                    <div className='flex flex-col justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2 border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
+                <div className='flex lg:overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-lg 
+                                scrollbar-track-black scrollbar-thumb-slate-900 flex-col justify-center items-center 
+                                lg:w-1/2 lg:h-full w-full border-b border-b-white lg:border-b-0 lg:border-r lg:border-r-white'>
                         {routineData.weeks.map((week, i) => <div className='h-full p-4 block w-full'>
-                                                <Week index={i} data={week} key={week.wuid}/>
+                                                    <Week index={i} data={week} key={week.wuid}/>
                                                 </div>)}
                     </div>
                     <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
                         <div className='h-full p-4 block w-full'>
-                            <Description tags={routineData.tags} title={routineData.title} description={routineData.description}/>
+                            <Description/>
                             <ReviewForm routineId={docRef}/>
-                            <ReviewList routineId={docRef}/>
+                            <ReviewList routineId={searchParams.get('routineID')}/>
                         </div>
                     </div>
                 </div>

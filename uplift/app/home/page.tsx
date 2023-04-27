@@ -1,11 +1,11 @@
 'use client'
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import {HiPlus, HioutlinelistBullet, HiOutlineListBullet} from 'react-icons/Hi2';
+import {HiPlus, HioutlinelistBullet, HiOutlineListBullet, HiXMark} from 'react-icons/Hi2';
 import {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '@/context/AuthContext';
-import {getDoc, getFirestore, doc} from 'firebase/firestore';
-import {firebase_app} from '@/config/firebaseInit';
+import {getDoc, getFirestore, doc, setDoc} from 'firebase/firestore';
+import {firebase_app, auth} from '@/config/firebaseInit';
 import {useRouter} from 'next/navigation';
 export const metadata = {
     title: 'upLift',
@@ -16,6 +16,19 @@ export default function Home() {
     const [profile, setProfile]= useContext(AuthContext);
     const [fetchedRoutines, setFetchedRoutines] = useState([]);
     const router = useRouter();
+   const unpinHandler = (routineID) => {
+        const db = getFirestore(firebase_app);
+        let newData = profile.pinnedRoutines;
+        if(newData.includes(routineID)){
+            newData = newData.filter(function (pin) {
+                    return(pin!=routineID);
+            });
+            setProfile({...profile,
+                       pinnedRoutines:newData
+                    });
+        }
+
+    }
     useEffect(() => {
         const db = getFirestore(firebase_app);
         let routineArr = [];
@@ -45,7 +58,14 @@ export default function Home() {
                 <div className='flex flex-col w-full justify-center items-center'>
 
                     {fetchedRoutines.map((routine) => <div key={routine.id} className='border-b border-white h-20 p-4 w-72 md:w-96 lg:w-1/2 flex items-center justify-between'>
-                                         <Link href={{pathname:'routine/view',query:{routineID:routine.id}}} className='text-white text-lg md:text-2xl font-sans font-light'>{routine.data().title}</Link>
+                                         <Link href={{pathname:'routine/view',query:{routineID:routine.id}}} 
+                                                className='text-white text-lg md:text-2xl font-sans font-light'>
+                                            {routine.data().title}
+                                         </Link>
+                                         <button onClick={(e) => unpinHandler(routine.id)}>
+                                            <HiXMark color = 'red' size='1.5rem'/>
+                                         </button>
+                                         
                     </div>)}
 
                 </div>

@@ -35,10 +35,14 @@ export default function Routines (){
     const [profile, setProfile] = useContext(AuthContext);
     const pinHandler = (routineID) => {
         const db = getFirestore(firebase_app);
-        let newData = profile;
-        newData.pinnedRoutines.push(routineID);
-        setProfile(newData);
-        setDoc(doc(db, 'users', auth.currentUser.uid), newData);
+        let newData = profile.pinnedRoutines;
+        if(!newData.includes(routineID)){
+            newData.push(routineID);
+        }
+        setProfile({...profile,
+                   pinnedRoutines:newData
+                });
+        setDoc(doc(db, 'users', auth.currentUser.uid), profile);
     }
     return(
         <div className='overflow-hidden h-full'>
