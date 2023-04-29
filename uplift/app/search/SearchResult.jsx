@@ -1,4 +1,4 @@
-import ReviewBlock from "@/components/ReviewBlock";
+import ReviewAverage from "@/components/ReviewAverage";
 import {useState, useContext} from 'react';
 import {AiFillPushpin} from 'react-icons/Ai';
 import {firebase_app, auth} from '@/config/firebaseInit';
@@ -36,7 +36,7 @@ function SearchResult(props) {
                 <p className='text-gray-400 text-xl'>{props.doc.weeks[0].days.length} Days/Week</p>
             </div>
 
-            <ReviewBlock routineId={props.doc._firestore_id}/>
+            <ReviewAverage routineID={props.doc._firestore_id}/>
         </div>
     )
 }
