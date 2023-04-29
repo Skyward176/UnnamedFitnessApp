@@ -2,15 +2,16 @@
 import Navbar from '@/components/Navbar';
 import {auth, firebase_app} from '@/config/firebaseInit';
 import {useState, useContext} from 'react';
-import {getFirestore, addDoc, collection, getDoc, doc} from 'firebase/firestore';
+import {query, where, getDocs, getFirestore, addDoc, collection, getDoc, doc} from 'firebase/firestore';
 import {AuthContext} from '@/context/AuthContext';
-function ReviewForm ({routineId}) {
+function ReviewForm ({showForm,routineId}) {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState(0);
     const db = getFirestore(firebase_app);
     const [profile, setProfile] = useContext(AuthContext);
-    const handleReviewForm = (e) => {
+    const handleReviewForm = async (e) => {
         e.preventDefault();
+
         const createReview = async () => {
             const newReview = await addDoc(collection(db, 'reviews'), {
                 uid: auth.currentUser.uid,
@@ -20,11 +21,19 @@ function ReviewForm ({routineId}) {
                 userName: profile.name
             });
         }
-        createReview();
+
+        const reviewsRef = collection(db, 'reviews');
+        const q = query(reviewsRef, where('routineID','==', routineId), where('uid', '==', auth.currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        console.log(querySnapshot.docs);
+        if(querySnapshot.docs.length == 0){
+            createReview();
+
+        }
     }
     return(
         <>
-            <div className='w-full flex flex-col h-full items-center justify-center'>
+            <div style={{display:showForm?'flex':'none'}} className='w-full flex-col h-full items-center justify-center'>
                 <h1 className='text-white text-2xl font-light font-sans my-2'>Write a Review </h1>
                 <form className = 'flex flex-col w-72 md:w-96 ' onSubmit={(e)=>handleReviewForm(e)}>
                     <div className='flex w-full items-center'>

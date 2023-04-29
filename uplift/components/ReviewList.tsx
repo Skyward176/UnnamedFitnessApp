@@ -1,26 +1,30 @@
 'use client'
-import {getFirestore, query, collection, getDocs, where} from 'firebase/firestore';
+import {getFirestore, query, doc, collection, getDocs, where} from 'firebase/firestore';
 import {firebase_app, auth} from '@/config/firebaseInit';
 import {useState, useEffect} from 'react';
 import ReviewBlock from '@/components/ReviewBlock';
-function ReviewList({routineId}) {
+function ReviewList({setShowForm, routineId}) {
     const [reviews, setReviews] = useState([]);
-
-    const fetchData = async () => {
+    const fetchData = async (routineId) => {
         const db = getFirestore(firebase_app);
         const reviewsRef = collection(db, 'reviews');
-        const q = query(reviewsRef, where('routineID', '==',routineId))
+        const q = query(reviewsRef, where('routineID', '==',doc(db, 'routines', routineId)))
         const querySnapshot = await getDocs(q);
         let reviewArr: any[] = [];
 
         querySnapshot.forEach((doc) => {
             reviewArr.push(doc);
         });
+        if(reviewArr.length > 0){
+            setShowForm(false);
+        }else {
+            setShowForm(true);
+        }
         setReviews(reviewArr);
     }
 
     useEffect( () => {
-        fetchData().catch((error)=>{
+        fetchData(routineId).catch((error)=>{
             console.log('Failed fetching data')
             console.log(error)
         })

@@ -18,6 +18,8 @@ function Search() {
     const [selectedRoutine, setSelectedRoutine] = useState();
 
     const [selectedData, setSelectedData] = useState();
+
+    const [showReviewForm, setShowReviewForm] = useState(true);
     const handleRoutineClick = (doc) => {
         const id = doc._firestore_id;
         if(selectedRoutine === id){
@@ -39,13 +41,16 @@ function Search() {
                             handleRoutineClick={handleRoutineClick}
                             searchParams={searchParams}
                             display={selectedRoutine!=null?'none':'flex'}
+                            setShowForm = {setShowReviewForm}
                 />
                 <ResultWithReviews
                     display={selectedRoutine!=null?'flex':'none'} 
                     handleRoutineClick={handleRoutineClick}
                     docData = {selectedData}
+                    setShowReviewForm = {setShowReviewForm}
+                    
                 />
-                <DetailView selectedRoutine={selectedRoutine}/>
+                <DetailView showReviewForm = {showReviewForm} selectedRoutine={selectedRoutine}/>
             </div>
         </div>
     )

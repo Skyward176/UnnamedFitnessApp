@@ -9,7 +9,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { RoutineContext } from '@/context/RoutineContext';
 import ReviewForm from '@/components/ReviewForm';
 
-export default function RoutineView({ docId }) {
+export default function RoutineView({ showReviewForm, docId }) {
 
     // state variables
     const [routineData, setRoutineData] = useState({
@@ -52,17 +52,17 @@ export default function RoutineView({ docId }) {
     return (
         <div className='flex flex-col flex-wrap h-full w-full'>
             <RoutineContext.Provider value={[routineData, setRoutineData]}>
-                <div className='w-full h-full flex flex-col text-white '>
+                <div className='w-full h-full flex flex-col text-white overflow-y-scroll'>
                     <div className='flex justify-center items-center lg:w-full lg:h-1/3 w-full h-1/2'>
                         <div className='h-full p-4 block w-full'>
                             <Description tags={routineData.tags} title={routineData.title} description={routineData.description} />
                         </div>
                     </div>
-                    <div className='flex overflow-scroll flex-col justify-center items-center lg:w-full lg:h-2/3 w-full h-1/2 border-t border-t-white lg:border-b-0 lg:border-t lg:border-r-white'>
+                    <div className='flex overflow-y-scroll flex-col justify-center items-center lg:w-full lg:h-2/3 w-full h-1/2 border-t border-t-white lg:border-b-0 lg:border-t lg:border-r-white'>
                         {routineData.weeks.map((week, i) => <div className='h-full p-4 block w-full'>
                             <Week index={i} data={week} key={week.wuid} />
                         </div>)}
-                        <ReviewForm routineId={docRef} />
+                        <ReviewForm showForm = {showReviewForm} routineId={docRef} />
                     </div>
                 </div>
 

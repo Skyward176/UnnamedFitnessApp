@@ -34,6 +34,8 @@ export default function RoutineView() {
     });
     const [docRef, setDocRef] = useState();
 
+    const [showReviewForm, setShowReviewForm] = useState(true);
+
     
     // db ref
     const db = getFirestore(firebase_app);
@@ -70,10 +72,10 @@ export default function RoutineView() {
                                                 </div>)}
                     </div>
                     <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
-                        <div className='h-full p-4 block w-full'>
+                        <div className='h-full p-4 flex flex-col w-full'>
                             <Description/>
-                            <ReviewForm routineId={docRef}/>
-                            <ReviewList routineId={searchParams.get('routineID')}/>
+                            <ReviewForm showForm = {showReviewForm} routineId={docRef}/>
+                            <ReviewList setShowForm = {setShowReviewForm} routineId={searchParams.get('routineID')}/>
                         </div>
                     </div>
                 </div>
