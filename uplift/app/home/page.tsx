@@ -7,16 +7,13 @@ import {AuthContext} from '@/context/AuthContext';
 import {getDoc, getFirestore, doc, setDoc} from 'firebase/firestore';
 import {firebase_app, auth} from '@/config/firebaseInit';
 import {useRouter} from 'next/navigation';
-export const metadata = {
-    title: 'upLift',
-}
 export default function Home() {
     //write functions to fetch full user profile
     // consider having a user context that stores al l of this instead
     const [profile, setProfile]= useContext(AuthContext);
     const [fetchedRoutines, setFetchedRoutines] = useState([]);
     const router = useRouter();
-   const unpinHandler = (routineID) => {
+    const unpinHandler = (routineID) => {
         const db = getFirestore(firebase_app);
         let newData = profile.pinnedRoutines;
         if(newData.includes(routineID)){

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "dependences": {
+  "dependencies": {
     "@heroicons/react": "^2.0.16",
     "@next/font": "13.1.6",
     "@types/node": "18.14.0",
