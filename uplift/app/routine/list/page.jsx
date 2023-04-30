@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar'
 import { collection, query, where, getDocs, getFirestore} from "firebase/firestore";
 import {firebase_app, auth} from '@/config/firebaseInit'
 import { useEffect, useState, useContext} from 'react';
-import {AiFillEdit, AiFillPushpin } from 'react-icons/Ai';
+import {AiFillEdit, AiFillPushpin } from 'react-icons/ai';
 import {HiXMark, HiPlus} from 'react-icons/hi2';
 import Link from 'next/link';
 import {deleteDoc,doc, setDoc} from 'firebase/firestore';

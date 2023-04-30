@@ -1,6 +1,6 @@
 import ReviewAverage from "@/components/ReviewAverage";
 import {useState, useContext} from 'react';
-import {AiFillPushpin} from 'react-icons/Ai';
+import {AiFillPushpin} from 'react-icons/ai';
 import {firebase_app, auth} from '@/config/firebaseInit';
 import {getFirestore, doc, setDoc} from 'firebase/firestore';
 import {AuthContext} from '@/context/AuthContext';

@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {AuthContext} from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
-import {AiOutlineEdit} from 'react-icons/Ai';
+import {AiOutlineEdit} from 'react-icons/ai';
 import {updateDoc, doc,getFirestore} from 'firebase/firestore';
 import {auth, firebase_app} from '@/config/firebaseInit';
 export default function UserProfile () {
