@@ -92,7 +92,7 @@ export default function SignUp() {
                             Weight:
                         </label>
                         <input className='w-full text-white flex-grow font-light font-sans text-2xl appearance-none bg-black my-4 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100' 
-                            onChange={(e) => setWeight(e.target.value)}  placeholder="100" type='number'/>
+                            onChange={(e) => setWeight(parseInt(e.target.value))}  placeholder="100" type='number'/>
                         <p className = 'font-light font-sans text-white text-2xl w-1/2 ml-2'> lbs </p>
                     </div>
                     <label className = 'font-light font-sans text-white text-2xl' htmlFor="password">

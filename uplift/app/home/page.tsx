@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import {HiPlus, HioutlinelistBullet, HiOutlineListBullet, HiXMark} from 'react-icons/hi2';
+import {HiPlus, HiOutlineListBullet, HiXMark} from 'react-icons/hi2';
 import {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '@/context/AuthContext';
 import {getDoc, getFirestore, doc, setDoc} from 'firebase/firestore';
