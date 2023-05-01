@@ -4,7 +4,7 @@ import {auth, firebase_app} from '@/config/firebaseInit';
 import {useState, useContext} from 'react';
 import {query, where, getDocs, getFirestore, addDoc, collection, getDoc, doc} from 'firebase/firestore';
 import {AuthContext} from '@/context/AuthContext';
-function ReviewForm ({showForm,routineId}) {
+function ReviewForm ({setReviews, showForm, routineId}) {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState(0);
     const db = getFirestore(firebase_app);
@@ -21,15 +21,22 @@ function ReviewForm ({showForm,routineId}) {
                 userName: profile.name
             });
         }
+        const fetchReviews = async (routineId) => {
+            const db = getFirestore(firebase_app);
+            const reviewsRef = collection(db, 'reviews');
+            const q = query(reviewsRef, where('routineID','==', routineId));
+            const querySnapshot = await getDocs(q);
+            let reviewArr: any[] = [];
 
-        const reviewsRef = collection(db, 'reviews');
-        const q = query(reviewsRef, where('routineID','==', routineId), where('uid', '==', auth.currentUser.uid));
-        const querySnapshot = await getDocs(q);
-        console.log(querySnapshot.docs);
-        if(querySnapshot.docs.length == 0){
-            createReview();
-
+            querySnapshot.forEach((doc) => {
+                reviewArr.push(doc);
+            });
+            setReviews(reviewArr);
         }
+
+        createReview();
+        fetchReviews(routineId);
+
     }
     return(
         <>

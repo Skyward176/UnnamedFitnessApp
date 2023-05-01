@@ -4,12 +4,12 @@ import Week from './Week';
 import Description from './Description';
 import { useState, useEffect } from 'react';
 import { firebase_app, auth } from '@/config/firebaseInit';
-import { getFirestore, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, getDoc, doc, collection, getDocs, where, query} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { RoutineContext } from '@/context/RoutineContext';
 import ReviewForm from '@/components/ReviewForm';
 
-export default function RoutineView({ showReviewForm, docId }) {
+export default function RoutineView({ setReviews, showReviewForm, docId }) {
 
     // state variables
     const [routineData, setRoutineData] = useState({
@@ -40,6 +40,18 @@ export default function RoutineView({ showReviewForm, docId }) {
 
 
     useEffect(() => {
+        const fetchReviews = async (routineId) => {
+            const db = getFirestore(firebase_app);
+            const reviewsRef = collection(db, 'reviews');
+            const q = query(reviewsRef, where('routineID','==', routineId));
+            const querySnapshot = await getDocs(q);
+            let reviewArr: any[] = [];
+
+            querySnapshot.forEach((doc) => {
+                reviewArr.push(doc);
+            });
+            setReviews(reviewArr);
+        }
         const docRef = doc(db, 'routines', docId);
         setDocRef(docRef);
         const hydrateData = async (docRef) => {
@@ -47,7 +59,8 @@ export default function RoutineView({ showReviewForm, docId }) {
             setRoutineData(data.data());
         }
         hydrateData(docRef);
-    }, [docId]);
+        fetchReviews(docRef);
+    }, [docId, setReviews, db]);
 
     return (
         <div className='flex flex-col flex-wrap h-full w-full'>
@@ -55,14 +68,14 @@ export default function RoutineView({ showReviewForm, docId }) {
                 <div className='w-full h-full flex flex-col text-white overflow-y-scroll'>
                     <div className='flex justify-center items-center lg:w-full lg:h-1/3 w-full h-1/2'>
                         <div className='h-full p-4 block w-full'>
-                            <Description tags={routineData.tags} title={routineData.title} description={routineData.description} />
+                            <Description docId = {docId} tags={routineData.tags} title={routineData.title} description={routineData.description} />
                         </div>
                     </div>
                     <div className='flex overflow-y-scroll flex-col justify-center items-center lg:w-full lg:h-2/3 w-full h-1/2 border-t border-t-white lg:border-b-0 lg:border-t lg:border-r-white'>
                         {routineData.weeks.map((week, i) => <div className='h-full p-4 block w-full'>
                             <Week index={i} data={week} key={week.wuid} />
                         </div>)}
-                        <ReviewForm showForm = {showReviewForm} routineId={docRef} />
+                        <ReviewForm setReviews = {setReviews} showForm = {showReviewForm} routineId={docRef} />
                     </div>
                 </div>
 

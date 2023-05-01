@@ -3,32 +3,24 @@ import {getFirestore, query, doc, collection, getDocs, where} from 'firebase/fir
 import {firebase_app, auth} from '@/config/firebaseInit';
 import {useState, useEffect} from 'react';
 import ReviewBlock from '@/components/ReviewBlock';
-function ReviewList({setShowForm, routineId}) {
-    const [reviews, setReviews] = useState([]);
-    const fetchData = async (routineId) => {
-        const db = getFirestore(firebase_app);
-        const reviewsRef = collection(db, 'reviews');
-        const q = query(reviewsRef, where('routineID', '==',doc(db, 'routines', routineId)))
-        const querySnapshot = await getDocs(q);
-        let reviewArr: any[] = [];
-
-        querySnapshot.forEach((doc) => {
-            reviewArr.push(doc);
-        });
-        if(reviewArr.length > 0){
-            setShowForm(false);
-        }else {
-            setShowForm(true);
-        }
-        setReviews(reviewArr);
-    }
+function ReviewList({reviews, setShowForm}) {
 
     useEffect( () => {
-        fetchData(routineId).catch((error)=>{
+        const checkData = async () => {
+            const filteredReviews = reviews.filter((review) => {
+                return review.data().uid == auth.currentUser.uid
+            })
+            if(filteredReviews.length > 0){
+                setShowForm(false);
+            }else {
+                setShowForm(true);
+            }
+        }
+        checkData().catch((error)=>{
             console.log('Failed fetching data')
             console.log(error)
         })
-    }, [routineId]);
+    }, [reviews, setShowForm]);
     return(
         <div className='text-white overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-track-black scrollbar-thumb-slate-900'>
             {

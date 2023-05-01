@@ -4,7 +4,7 @@ import Week from './Week';
 import Description from './Description';
 import {useState, useEffect} from 'react';
 import {firebase_app, auth} from '@/config/firebaseInit';
-import {getFirestore, getDoc, doc} from 'firebase/firestore';
+import {getFirestore, getDoc, doc, collection, where, getDocs, query} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {RoutineContext} from '@/context/RoutineContext';
 import ReviewForm from '@/components/ReviewForm';
@@ -35,6 +35,7 @@ export default function RoutineView() {
     const [docRef, setDocRef] = useState();
 
     const [showReviewForm, setShowReviewForm] = useState(true);
+    const [reviews, setReviews] = useState([]);
 
     
     // db ref
@@ -49,6 +50,19 @@ export default function RoutineView() {
     // on page load, check params to determine creation of new routine, else grab routine reference passed through params
     // use
     useEffect(() => {
+        const fetchReviews = async (routineId) => {
+            const db = getFirestore(firebase_app);
+            const reviewsRef = collection(db, 'reviews');
+            const q = query(reviewsRef, where('routineID','==', routineId));
+            const querySnapshot = await getDocs(q);
+            let reviewArr: any[] = [];
+
+            querySnapshot.forEach((doc) => {
+                reviewArr.push(doc);
+            });
+            setReviews(reviewArr);
+        }
+        
         var docId = searchParams.get('routineID');
         docId = doc(db, 'routines', docId);
         setDocRef(docId);
@@ -57,7 +71,8 @@ export default function RoutineView() {
             setRoutineData(data.data());
         }
         hydrateData(docId);
-    }, [searchParams]);
+        fetchReviews(docId);
+    }, [searchParams, db]);
 
     return(
         <div className='flex flex-col h-full w-full md:overflow-hidden'>
@@ -74,8 +89,8 @@ export default function RoutineView() {
                     <div className='flex justify-center items-center lg:w-1/2 lg:h-full w-full h-1/2'>
                         <div className='h-full p-4 flex flex-col w-full'>
                             <Description/>
-                            <ReviewForm showForm = {showReviewForm} routineId={docRef}/>
-                            <ReviewList setShowForm = {setShowReviewForm} routineId={searchParams.get('routineID')}/>
+                            <ReviewForm setReviews = {setReviews} showForm = {showReviewForm} routineId={docRef}/>
+                            <ReviewList reviews = {reviews} setShowForm = {setShowReviewForm}/>
                         </div>
                     </div>
                 </div>
