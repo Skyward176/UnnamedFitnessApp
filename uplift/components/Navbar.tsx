@@ -88,7 +88,7 @@ export default function Navbar () {
                     </div>
                     <div className='absolute top-16 flex flex-col items-center justify-center w-96 text-white' style={{display:searchDisplay}}>
                         {
-                            Object.values(searchResults).map((routine) => <Link href={{pathname:'routine/view',query:{routineID:routine._firestore_id}}} className='w-full flex items-center justify-center  text-center text-2xl h-16 '>{routine.title}</Link>)
+                            Object.values(searchResults).map((routine) => <Link key={routine._firestore_id} href={{pathname:'routine/view',query:{routineID:routine._firestore_id}}} className='w-full flex items-center justify-center  text-center text-2xl h-16 '>{routine.title}</Link>)
                         }
 
                     </div>
