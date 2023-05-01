@@ -102,7 +102,7 @@ export default function Navbar () {
             </div>
             <div className='relative flex flex-col items-center justify-center bottom-0 w-full border border-white bg-black md:w-96 md:float-right' style={{display:display}}>
                 {
-                    menuItems.map((item) => <div className='w-full border border-white text-center text-2xl font-sans font-light'><Link className='text-white ' href={item.href}>{item.name}</Link></div>)
+                    menuItems.map((item) => <div key={item} className='w-full border border-white text-center text-2xl font-sans font-light'><Link className='text-white ' href={item.href}>{item.name}</Link></div>)
                 }
                 {auth.currentUser ? <button onClick={logoutHandler} className='text-white text-2xl font-sans font-light'>Logout</button>:<div className='w-full border border-white text-center text-2xl font-sans font-light'><Link className='text-white ' href='auth/signin'>Login</Link></div>}
             </div>
