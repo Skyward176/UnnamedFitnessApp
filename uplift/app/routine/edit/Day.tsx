@@ -105,7 +105,7 @@ const Day = (props) => {
                 <button onClick={handleDelete}><HiXMark color='red' size='1.75rem'/></button>
                 <button onClick={props.newDayHandler}><HiPlus size='1.75rem'/></button>
                 <button onClick={(e) => props.duplicateDayHandler(props.index)}><HiOutlineDocumentDuplicate size='1.75rem'/></button>
-                <input onBlur={handleTitleChange} placeholder={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
+                <input onBlur={handleTitleChange} defaultValue={data.title} type='text' className='font-light font-sans text-2xl text-left w-1/2 h-1/2 appearance-none bg-black mx-2 overflow-y-scroll'></input>
             </div>
             <div className='flex flex-col w-fit my-2'>
                 {data.exercises.map((exercise,i )=> <Exercise weekIndex={props.weekIndex} 

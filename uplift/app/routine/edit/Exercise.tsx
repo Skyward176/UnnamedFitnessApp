@@ -14,7 +14,6 @@ const Exercise = (props) => {
         const updatedData = routineData;
         updatedData.weeks[props.weekIndex].days[props.dayIndex].exercises[props.index].name= e.target.value;
         setRoutineData(updatedData);
-        updateDoc(docRef, routineData);
     }
     const handleSetsChange= (e) =>{
         const updatedData = routineData;
@@ -43,13 +42,13 @@ const Exercise = (props) => {
                 <button onClick={handleDelete}><HiXMark color='red' size='1.75rem'/></button>
                 <button onClick={props.newExerciseHandler}><HiPlus size='1.75rem'/></button>
                 <div className='flex'>
-                    <input type='text' onBlur={handleTitleChange} placeholder = {data.name} className='w-1/4 appearance-none bg-black mx-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '>
+                <input type='text' onBlur={(e) => updateDoc(docRef, routineData)} onChange={(e) => handleTitleChange(e)} defaultValue = {routineData.weeks[props.weekIndex].days[props.dayIndex].exercises[props.index].name} className='w-fit appearance-none bg-black mx-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '>
                     </input>
                     <p> for </p>
-                    <input type='text' onBlur={handleSetsChange} placeholder = {String(data.sets)} className='w-6 text-center appearance-none bg-black mx-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '>
+                    <input type='text' onBlur={handleSetsChange} defaultValue = {String(data.sets)} className='w-6 text-center appearance-none bg-black mx-2 border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '>
                     </input>
                     <p> Sets x </p>
-                    <input type='text' onBlur={handleRepsChange} placeholder = {String(data.reps)} className='w-6 text-center appearance-none bg-black mx-2  border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '>
+                    <input type='text' onBlur={handleRepsChange} defaultValue = {String(data.reps)} className='w-6 text-center appearance-none bg-black mx-2  border border-t-0 border-l-0 border-r-0 border-b-1 border-b-accent-100 '>
                     </input>
                     <p> Reps </p>
                 </div>
