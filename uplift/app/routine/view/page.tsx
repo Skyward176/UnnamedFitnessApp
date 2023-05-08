@@ -2,9 +2,9 @@
 import Navbar from '@/components/Navbar';
 import Week from './Week';
 import Description from './Description';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import {firebase_app, auth} from '@/config/firebaseInit';
-import {getFirestore, getDoc, doc, collection, where, getDocs, query} from 'firebase/firestore';
+import {getFirestore,deleteDoc, getDoc, doc, collection, where, getDocs, query} from 'firebase/firestore';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {RoutineContext} from '@/context/RoutineContext';
 import ReviewForm from '@/components/ReviewForm';
@@ -49,19 +49,18 @@ export default function RoutineView() {
 
     // on page load, check params to determine creation of new routine, else grab routine reference passed through params
     // use
-    useEffect(() => {
-        const fetchReviews = async (routineId) => {
-            const db = getFirestore(firebase_app);
-            const reviewsRef = collection(db, 'reviews');
-            const q = query(reviewsRef, where('routineID','==', routineId));
-            const querySnapshot = await getDocs(q);
-            let reviewArr: any[] = [];
+    const fetchReviews = useCallback(async (routineId) => {
+        const reviewsRef = collection(db, 'reviews');
+        const q = query(reviewsRef, where('routineID','==', routineId));
+        const querySnapshot = await getDocs(q);
+        let reviewArr: any[] = [];
 
-            querySnapshot.forEach((doc) => {
-                reviewArr.push(doc);
-            });
-            setReviews(reviewArr);
-        }
+        querySnapshot.forEach((doc) => {
+            reviewArr.push(doc);
+        });
+        setReviews(reviewArr);
+    }, [db])
+    useEffect(() => {
         
         var docId = searchParams.get('routineID');
         docId = doc(db, 'routines', docId);
@@ -72,7 +71,13 @@ export default function RoutineView() {
         }
         hydrateData(docId);
         fetchReviews(docId);
-    }, [searchParams, db]);
+    }, [searchParams, db, fetchReviews]);
+
+    const deleteReviewHandler = (reviewId) => {
+        deleteDoc(doc(db,'reviews', reviewId));
+        fetchReviews(docRef);
+        
+    }
 
     return(
         <div className='flex flex-col h-full w-full md:overflow-hidden'>
@@ -90,7 +95,7 @@ export default function RoutineView() {
                         <div className='h-full p-4 flex flex-col w-full'>
                             <Description/>
                             <ReviewForm setReviews = {setReviews} showForm = {showReviewForm} routineId={docRef}/>
-                            <ReviewList reviews = {reviews} setShowForm = {setShowReviewForm}/>
+                            <ReviewList deleteHandler = {deleteReviewHandler} reviews = {reviews} setShowForm = {setShowReviewForm}/>
                         </div>
                     </div>
                 </div>

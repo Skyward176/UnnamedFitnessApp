@@ -1,9 +1,9 @@
 'use client'
-import {getFirestore, query, doc, collection, getDocs, where} from 'firebase/firestore';
-import {firebase_app, auth} from '@/config/firebaseInit';
-import {useState, useEffect} from 'react';
+import {HiXMark} from 'react-icons/hi2';
+import {auth} from '@/config/firebaseInit';
+import {useEffect} from 'react';
 import ReviewBlock from '@/components/ReviewBlock';
-function ReviewList({reviews, setShowForm}) {
+function ReviewList({deleteHandler, reviews, setShowForm}) {
 
     useEffect( () => {
         const checkData = async () => {
@@ -27,8 +27,9 @@ function ReviewList({reviews, setShowForm}) {
                 reviews.map((review) => <div key={review.id} className='flex flex-col border-b border-white h-fit p-4 w-72 md:w-96 lg:w-full '>
                     <div  className='flex items-center justify-between my-2'>
                         <ReviewBlock stars={review.data().rating} totalStars={5}/>
-                        <div>
-                        <p className='text-2xl font-light font-sans'><span className='text-accent-100'>By</span> {review.data().userName}</p>
+                        <div className='flex'>
+                            <p className='text-2xl font-light font-sans'><span className='text-accent-100'>By</span> {review.data().userName}</p>
+                            <button style={{display:review.data().uid == auth.currentUser.uid ? 'block':'none'}} onClick={() => deleteHandler(review.id)}><HiXMark color='red' size='1.75rem'/></button>
                         </div>
                     </div>
                     <div className='text-white text-2xl font-sans font-light'>
