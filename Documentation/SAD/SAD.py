@@ -3,7 +3,7 @@
 from diagrams import Diagram
 from diagrams.firebase.develop import Authentication, Firestore
 from diagrams.firebase.extentions import Extensions
-from diagrams.programming.framework import Vue
+from diagrams.programming.framework import React
 from diagrams.onprem.client import Users
 graph_attr = {
     "fontsize": "25",
@@ -12,8 +12,8 @@ graph_attr = {
 }
 with Diagram("upLift", direction="LR", filename="systemArchitectureDiagram", graph_attr=graph_attr):
     database = Firestore("Firestore Database")
-    frontend = Vue("Frontend")
-    search = Extensions("Algolia Text Search")
+    frontend = React("Frontend")
+    search = Extensions("Meili Full Text Search")
     database - frontend
     database >> search
     search - frontend
