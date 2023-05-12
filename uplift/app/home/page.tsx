@@ -24,7 +24,7 @@ export default function Home() {
                        pinnedRoutines:newData
                     });
         }
-
+        setDoc(doc(db, 'users', auth.currentUser.uid), profile)
     }
     useEffect(() => {
         const db = getFirestore(firebase_app);
